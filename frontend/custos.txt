@@ -1,0 +1,58 @@
+Aqui está a análise detalhada dos custos para essa arquitetura (Front na Vercel + Back/Banco no Render), considerando que você já tem o domínio.
+
+O resumo curto é: R$ 0,00 para testar/brincar, mas aproximadamente US$ 14,00 (± R$ 80,00)/mês para manter o projeto rodando de forma estável e segura.
+
+1. Frontend: Vercel
+Custo: R$ 0,00 (Plano Hobby)
+
+Domínio: Como você já comprou no registro.br, conectar ele na Vercel é gratuito. O plano "Hobby" permite domínios personalizados sem custo extra.
+
+Limitações: O plano gratuito é para uso pessoal/não comercial. Se o projeto for um negócio comercial oficial, você teoricamente deveria usar o plano Pro ($20/mês), mas para portfólios, MVPs e projetos pessoais, o gratuito atende perfeitamente.
+
+2. Backend + Banco: Render
+Aqui é onde mora o custo real. O Render tem um plano gratuito ("Free Tier"), mas ele tem "pegadinhas" que inviabilizam projetos sérios.
+
+Opção A: Custo Zero (Somente para Testes)
+Backend (Web Service): Gratuito.
+
+Problema: Ele "dorme" após 15 minutos de inatividade. Quando alguém acessar seu site, vai demorar uns 30-50 segundos para o backend "acordar" (Cold Start).
+
+Banco de Dados (PostgreSQL): Gratuito.
+
+Problema Crítico: O banco gratuito apaga todos os dados após 30 dias (antes eram 90, agora são 30). Ele serve apenas para testes temporários.
+
+Total: R$ 0,00 (mas seu banco será deletado todo mês).
+
+Opção B: Mínimo Viável (Produção Estável)
+Para o banco não ser deletado e o backend não dormir, você precisa dos planos "Starter".
+
+Backend (Plano Starter): US$ 7,00 / mês.
+
+Fica ligado 24h/7d (sem lentidão inicial).
+
+Banco de Dados (Plano Starter): US$ 7,00 / mês.
+
+256 MB de RAM e 1 GB de disco. Seus dados ficam salvos para sempre.
+
+Total: US$ 14,00 / mês (aprox. R$ 80,00 dependendo do dólar + IOF).
+
+Veredito e Recomendação
+Se você quer apenas colocar o projeto no ar para mostrar em portfólio e não se importa em perder os dados (ou recriar o banco) todo mês, a Opção A (Grátis) funciona.
+
+Se você quer que o projeto funcione de verdade com dados reais:
+
+Frontend: Mantenha na Vercel (Grátis).
+
+Backend: Pague o Render Starter (US$ 7).
+
+Banco de Dados: Para economizar os outros US$ 7 do banco do Render, sugiro usar o Supabase ou Neon. Ambos oferecem um plano gratuito generoso e permanente (o banco não é deletado).
+
+Combo Econômico Ideal:
+
+Front: Vercel (Grátis)
+
+Back: Render Starter (US$ 7)
+
+Banco: Supabase/Neon (Grátis)
+
+Total: ~US$ 7,00 / mês (aprox. R$ 40,00)
