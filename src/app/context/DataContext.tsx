@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import diego from '@/assets/diego.png';
+import diego from '@/assets/Diego.png';
 import jonatas from '@/assets/jonatas.png';
 import heloisa from '@/assets/heloisa.png';
 
