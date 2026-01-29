@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronDown, Scale } from 'lucide-react';
+import { useData } from '../context/DataContext';
 
 // Importe suas imagens aqui ou use caminhos públicos
 import pag1 from '@/assets/view-3d-justice-scales.jpg'; // Ajuste o caminho se precisar
@@ -13,6 +14,7 @@ const slides = [
 ];
 
 export function HeroCarousel() {
+    const { name } = useData();
     const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
@@ -52,7 +54,7 @@ export function HeroCarousel() {
                 <Scale className="h-20 w-20 mx-auto mb-6 text-white" />
 
                 <h1 className="text-3xl md:text-4xl font-bold mb-6 drop-shadow-md">
-                    Advocacia Diêgo Thales de Sousa Moura
+                    {name}
                 </h1>
 
                 <p className="text-md md:text-lg opacity-90 mb-8 drop-shadow-sm">

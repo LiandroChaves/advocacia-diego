@@ -20,6 +20,8 @@ export function AdminDashboard() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const {
+    name,
+    updateName,
     about,
     updateAbout,
     team,
@@ -37,6 +39,7 @@ export function AdminDashboard() {
   } = useData();
 
   const [activeTab, setActiveTab] = useState<EditMode>('about');
+  const [editingName, setEditingName] = useState(name);
   const [editingAbout, setEditingAbout] = useState(about);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [editingTeam, setEditingTeam] = useState<Partial<TeamMember>>({});
@@ -52,10 +55,12 @@ export function AdminDashboard() {
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
+    setEditingName(name);
     setEditingAbout(about);
-  }, [about]);
+  }, [name, about]);
 
   const handleSaveAbout = () => {
+    updateName(editingName);
     updateAbout(editingAbout);
     alert('Informações salvas com sucesso!');
   };
@@ -103,44 +108,40 @@ export function AdminDashboard() {
         <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
           <button
             onClick={() => setActiveTab('about')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap ${
-              activeTab === 'about'
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap ${activeTab === 'about'
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-card border border-border text-foreground hover:bg-muted'
-            }`}
+              }`}
           >
             <FileText className="h-4 w-4" />
             Sobre
           </button>
           <button
             onClick={() => setActiveTab('team')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap ${
-              activeTab === 'team'
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap ${activeTab === 'team'
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-card border border-border text-foreground hover:bg-muted'
-            }`}
+              }`}
           >
             <Users className="h-4 w-4" />
             Equipe
           </button>
           <button
             onClick={() => setActiveTab('areas')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap ${
-              activeTab === 'areas'
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap ${activeTab === 'areas'
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-card border border-border text-foreground hover:bg-muted'
-            }`}
+              }`}
           >
             <Briefcase className="h-4 w-4" />
             Áreas
           </button>
           <button
             onClick={() => setActiveTab('faq')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap ${
-              activeTab === 'faq'
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap ${activeTab === 'faq'
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-card border border-border text-foreground hover:bg-muted'
-            }`}
+              }`}
           >
             <HelpCircle className="h-4 w-4" />
             FAQ
@@ -152,6 +153,15 @@ export function AdminDashboard() {
           <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
             <h2 className="text-2xl font-bold text-foreground mb-6">Informações Sobre o Escritório</h2>
             <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Nome do Escritório</label>
+                <input
+                  type="text"
+                  value={editingName}
+                  onChange={(e) => setEditingName(e.target.value)}
+                  className="w-full px-4 py-2 bg-input-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                />
+              </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">Título</label>
                 <input

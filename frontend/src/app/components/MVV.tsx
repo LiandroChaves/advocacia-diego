@@ -2,7 +2,7 @@ import { useData } from "../context/DataContext";
 import { Target, Eye, Award, CheckCircle2 } from 'lucide-react';
 
 export function MVV() {
-    const { about } = useData();
+    const { about, name } = useData();
 
     // Texto "Encher Linguiça" Profissional (Marketing Jurídico)
     // Se quiser, depois você move isso pro seu DataContext, mas deixei aqui pra facilitar.
@@ -99,7 +99,7 @@ export function MVV() {
 
                     <div className="relative z-10">
                         <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                            Por que escolher a <span className="text-[#c5a059]">Advocacia Diêgo Thales de Sousa Moura</span>?
+                            Por que escolher a <span className="text-[#c5a059]">{name}</span>?
                         </h3>
                         <p className="text-white/80 leading-relaxed mb-6">
                             Em um cenário jurídico cada vez mais complexo e dinâmico, a tradição não basta. É preciso aliar experiência com agilidade estratégica. Nosso escritório oferece uma estrutura completa para blindar seus interesses.

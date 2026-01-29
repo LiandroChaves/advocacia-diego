@@ -35,6 +35,8 @@ export interface FAQ {
 }
 
 interface DataContextType {
+  name: string;
+  updateName: (name: string) => void;
   about: AboutOffice;
   updateAbout: (data: Partial<AboutOffice>) => void;
   team: TeamMember[];
@@ -54,6 +56,7 @@ interface DataContextType {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 const defaultData = {
+  name: 'DT Advocacia e Consultoria Jurídica',
   about: {
     id: '1',
     title: 'Sobre o Escritório',
@@ -134,6 +137,11 @@ const defaultData = {
 };
 
 export function DataProvider({ children }: { children: ReactNode }) {
+  const [name, setName] = useState(() => {
+    const saved = localStorage.getItem('data_name');
+    return saved || defaultData.name;
+  });
+
   const [about, setAbout] = useState<AboutOffice>(() => {
     const saved = localStorage.getItem('data_about');
     return saved ? JSON.parse(saved) : defaultData.about;
@@ -155,6 +163,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
+    localStorage.setItem('data_name', name);
+  }, [name]);
+
+  useEffect(() => {
     localStorage.setItem('data_about', JSON.stringify(about));
   }, [about]);
 
@@ -169,6 +181,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem('data_faqs', JSON.stringify(faqs));
   }, [faqs]);
+
+  const updateName = (newName: string) => {
+    setName(newName);
+  };
 
   const updateAbout = (data: Partial<AboutOffice>) => {
     setAbout(prev => ({ ...prev, ...data }));
@@ -216,6 +232,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
   return (
     <DataContext.Provider
       value={{
+        name,
+        updateName,
         about,
         updateAbout,
         team,
