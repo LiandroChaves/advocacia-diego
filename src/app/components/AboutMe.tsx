@@ -1,6 +1,6 @@
 import React from 'react';
 // import diegoThales from '@/assets/diego-thales.png';
-import diegoThales from '@/assets/Diego - Copia.png';
+import diegoThales from '@/assets/diego - copia.png';
 import fundoDG from '@/assets/fundoDG.png';
 
 export function AboutMe() {

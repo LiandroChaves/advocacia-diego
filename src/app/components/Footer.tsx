@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Facebook, Instagram, Linkedin, MapPin, Phone, Mail, ChevronRight } from 'lucide-react';
 import logoBranca from '@/assets/logobranca.png';
-import stfImg from '@/assets/STF.png';
-import stjImg from '@/assets/STJ.png';
-import tstImg from '@/assets/TST.png';
+import stfImg from '@/assets/stf.png';
+import stjImg from '@/assets/stj.png';
+import tstImg from '@/assets/tst.png';
 
 export function Footer() {
     const currentYear = new Date().getFullYear();
