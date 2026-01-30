@@ -1,8 +1,12 @@
 import { useData } from '@/app/context/DataContext';
-import { Scale, Briefcase, Users, Shield, Gavel } from 'lucide-react';
+import {
+    Scale, Gavel, FileText, Briefcase, Shield, Users, Home, Heart,
+    Handshake, Building2, Globe, LifeBuoy, Lock, Stethoscope, Car, Landmark
+} from 'lucide-react';
 
 const iconMap: Record<string, any> = {
-    Scale, Briefcase, Users, Shield, Gavel
+    Scale, Gavel, FileText, Briefcase, Shield, Users, Home, Heart,
+    Handshake, Building2, Globe, LifeBuoy, Lock, Stethoscope, Car, Landmark
 };
 
 export function PracticeAreas() {

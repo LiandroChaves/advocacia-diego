@@ -1,48 +1,114 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 
 interface User {
+  id: string;
   email: string;
   name: string;
 }
 
 interface AuthContextType {
+  token: string | null;
   user: User | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => boolean;
+  login: (email: string, password: string) => Promise<void>;
+  register: (data: { email: string; name: string; password?: string; adminPassword?: string }) => Promise<void>;
   logout: () => void;
+  verifyToken: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [user, setUser] = useState<User | null>(null);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
-  useEffect(() => {
-    // Verificar se há sessão salva
-    const savedUser = localStorage.getItem('auth_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
+  const logout = useCallback(() => {
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }, []);
 
-  const login = (email: string, password: string): boolean => {
-    // Login simples para demonstração (email: admin@advocacia.com / senha: admin123)
-    if (email === 'admin@advocacia.com' && password === 'admin123') {
-      const user = { email, name: 'Administrador' };
-      setUser(user);
-      localStorage.setItem('auth_user', JSON.stringify(user));
-      return true;
+  const verifyToken = useCallback(async () => {
+    const storedToken = localStorage.getItem('token');
+    if (!storedToken) {
+      logout();
+      return;
     }
-    return false;
+
+    try {
+      const response = await fetch(`${apiUrl}/sessions/verify`, {
+        headers: {
+          'Authorization': `Bearer ${storedToken}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      } else {
+        logout();
+      }
+    } catch (error) {
+      console.error('Error verifying token:', error);
+      logout();
+    }
+  }, [apiUrl, logout]);
+
+  useEffect(() => {
+    if (token) {
+      verifyToken();
+    }
+  }, [token, verifyToken]);
+
+  const login = async (email: string, password: string) => {
+    const response = await fetch(`${apiUrl}/sessions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Erro ao fazer login');
+    }
+
+    setToken(data.token);
+    setUser(data.user);
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('auth_user');
+  const register = async (userData: { email: string; name: string; password?: string; adminPassword?: string }) => {
+    const response = await fetch(`${apiUrl}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Erro ao registrar');
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout }}>
+    <AuthContext.Provider value={{
+      token,
+      user,
+      isAuthenticated: !!token,
+      login,
+      register,
+      logout,
+      verifyToken
+    }}>
       {children}
     </AuthContext.Provider>
   );

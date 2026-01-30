@@ -2,45 +2,40 @@ import { useState, useEffect } from 'react';
 import { ChevronDown, Scale } from 'lucide-react';
 import { useData } from '../context/DataContext';
 
-// Importe suas imagens aqui ou use caminhos públicos
-import pag1 from '@/assets/view-3d-justice-scales.jpg'; // Ajuste o caminho se precisar
-import pag2 from '@/assets/photorealistic-lawyer-environment.jpg'; // Ajuste o caminho se precisar
-import pag3 from '@/assets/gavel-scales-justice-law-books.jpg'; // Ajuste o caminho se precisar
-
-const slides = [
-    pag1,
-    pag2,
-    pag3
-];
-
 export function HeroCarousel() {
-    const { name } = useData();
+    const { name, banners } = useData();
     const [currentSlide, setCurrentSlide] = useState(0);
 
+    const activeBanners = banners.filter(b => b.active);
+
     useEffect(() => {
+        if (activeBanners.length <= 1) return;
+
         const timer = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % slides.length);
+            setCurrentSlide((prev) => (prev + 1) % activeBanners.length);
         }, 5000);
         return () => clearInterval(timer);
-    }, []);
+    }, [activeBanners.length]);
 
     const scrollToAbout = () => {
         document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    if (activeBanners.length === 0) return null;
+
     return (
         <section className="relative h-[400px] md:h-[750px] w-full overflow-hidden flex items-center justify-center">
             {/* Background Slides */}
-            {slides.map((slide, index) => (
+            {activeBanners.map((banner, index) => (
                 <div
-                    key={index}
+                    key={banner.id}
                     className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'
                         }`}
                 >
                     {/* Imagem de fundo */}
                     <img
-                        src={slide}
-                        alt={`Slide ${index + 1}`}
+                        src={banner.imageUrl.startsWith('http') ? banner.imageUrl : `${import.meta.env.VITE_API_URL}${banner.imageUrl}`}
+                        alt={banner.title || `Slide ${index + 1}`}
                         className="absolute inset-0 w-full h-full object-cover object-top md:object-center"
                     />
 
@@ -53,12 +48,12 @@ export function HeroCarousel() {
             <div className="relative z-10 container mx-auto text-center px-4 max-w-4xl text-white -translate-y-6 md:-translate-y-36">
                 <Scale className="h-20 w-20 mx-auto mb-6 text-white" />
 
-                <h1 className="text-3xl md:text-4xl font-bold mb-6 drop-shadow-md">
-                    {name}
+                <h1 className="text-3xl md:text-4xl font-bold mb-4 drop-shadow-md">
+                    {activeBanners[currentSlide]?.title || name}
                 </h1>
 
                 <p className="text-md md:text-lg opacity-90 mb-8 drop-shadow-sm">
-                    Defendendo seus direitos com ética e comprometimento
+                    {activeBanners[currentSlide]?.description || 'Defendendo seus direitos com ética e comprometimento'}
                 </p>
 
                 <button

@@ -3,7 +3,10 @@ import React from 'react';
 import diegoThales from '@/assets/diego-copia.png';
 import fundoDG from '@/assets/fundoDG.png';
 
+import { useData } from '@/app/context/DataContext';
+
 export function AboutMe() {
+    const { about } = useData();
     return (
         <section className="relative md:py-12 py-16 overflow-hidden" id='aboutme'>
 
@@ -28,25 +31,28 @@ export function AboutMe() {
 
                 <div className="order-2 md:order-1 text-center md:text-left mb-8 md:mb-0 self-center">
                     <h2 className="text-3xl md:text-5xl font-bold text-primary mb-4 md:mb-6">
-                        Diêgo Thales
+                        {about.title || 'Diêgo Thales'}
                     </h2>
 
                     <p className="text-base md:text-lg leading-relaxed text-foreground/80 text-justify md:text-left">
-                        Com <strong className="text-primary font-bold">8 anos</strong> de experiência na advocacia,
-                        este profissional consolidou uma carreira marcada por comprometimento, ética e resultados expressivos.
-                        Atuando em diversas áreas do <strong className="text-primary font-bold">Direito</strong>,
-                        desenvolveu habilidades estratégicas para análise de casos complexos, negociação e defesa dos
-                        interesses de seus clientes. Sua trajetória é pautada pela constante atualização jurídica, garantindo{' '}
-                        <span className="text-primary font-bold">soluções eficazes e seguras.</span>
+                        {about.description || 'Com 8 anos de experiência na advocacia...'}
                     </p>
                 </div>
 
                 <div className="order-1 md:order-2 flex justify-center md:justify-end relative">
-                    <img
-                        src={diegoThales}
-                        alt="Diêgo Thales"
-                        className="w-auto h-auto max-h-[350px] md:max-h-[500px] object-contain drop-shadow-lg"
-                    />
+                    {about.imageUrl ? (
+                        <img
+                            src={about.imageUrl.startsWith('http') ? about.imageUrl : `${import.meta.env.VITE_API_URL}${about.imageUrl}`}
+                            alt={about.title}
+                            className="w-auto h-auto max-h-[350px] md:max-h-[500px] object-contain drop-shadow-lg"
+                        />
+                    ) : (
+                        <img
+                            src={diegoThales}
+                            alt="Diêgo Thales"
+                            className="w-auto h-auto max-h-[350px] md:max-h-[500px] object-contain drop-shadow-lg"
+                        />
+                    )}
                 </div>
 
             </div>

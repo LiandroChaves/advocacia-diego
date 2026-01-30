@@ -1,255 +1,377 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import diego from '@/assets/diego.png';
-import jonatas from '@/assets/jonatas.png';
-import heloisa from '@/assets/heloisa.png';
+import { useAuth } from './AuthContext';
 
-export interface AboutOffice {
-  id: string;
-  title: string;
-  description: string;
-  mission: string;
-  vision: string;
-  values: string[];
-}
+//fallback images
 
-export interface TeamMember {
-  id: string;
-  name: string;
-  role: string;
-  bio: string;
-  imageUrl: string;
-  specialties: string[];
-}
+//about
+import diegoAbout from '@/assets/diego-copia.png';
 
-export interface PracticeArea {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-}
+//team
+import diegoTeam from '@/assets/diego.png';
+import jonatasTeam from '@/assets/jonatas.png';
+import heloisaTeam from '@/assets/heloisa.png';
 
-export interface FAQ {
-  id: string;
-  question: string;
-  answer: string;
-}
+//testimonials
+import diegoTestimonial from '@/assets/diego.png';
+import jonatasTestimonial from '@/assets/jonatas.png';
+import heloisaTestimonial from '@/assets/heloisa.png';
+
+//banners
+import banner1 from '@/assets/banner1.jpg';
+import banner2 from '@/assets/banner2.jpg';
+import banner3 from '@/assets/banner3.jpg';
+
+//stats
+import statsBackground from '@/assets/escritorio.png';
+
+// --- INTERFACES ---
+export interface AboutOffice { id: string; title: string; description: string; mission: string; vision: string; values: string[]; imageUrl?: string; imageFile?: File }
+export interface TeamMember { id: string; name: string; role: string; bio: string; imageUrl: string; specialties: string[]; imageFile?: File }
+export interface PracticeArea { id: string; title: string; description: string; icon: string; }
+export interface FAQ { id: string; question: string; answer: string; }
+export interface Banner { id: string; imageUrl: string; title?: string; description?: string; active: boolean; imageFile?: File }
+export interface Stat { id: string; label: string; value: string; }
+export interface StatsSetup { id?: string; backgroundImageUrl: string; imageFile?: File; }
+export interface Testimonial { id: string; name: string; role: string; content: string; avatar: string; imageFile?: File }
+export interface ContactMessage { id: string; name: string; email: string; phone?: string; subject?: string; message: string; createdAt?: string; }
 
 interface DataContextType {
   name: string;
   updateName: (name: string) => void;
+
   about: AboutOffice;
-  updateAbout: (data: Partial<AboutOffice>) => void;
+  updateAbout: (data: Partial<AboutOffice>) => Promise<void>;
+
   team: TeamMember[];
-  addTeamMember: (member: Omit<TeamMember, 'id'>) => void;
-  updateTeamMember: (id: string, data: Partial<TeamMember>) => void;
-  deleteTeamMember: (id: string) => void;
+  addTeamMember: (member: Omit<TeamMember, 'id'>) => Promise<void>;
+  updateTeamMember: (id: string, data: Partial<TeamMember>) => Promise<void>;
+  deleteTeamMember: (id: string) => Promise<void>;
+
   practiceAreas: PracticeArea[];
-  addPracticeArea: (area: Omit<PracticeArea, 'id'>) => void;
-  updatePracticeArea: (id: string, data: Partial<PracticeArea>) => void;
-  deletePracticeArea: (id: string) => void;
+  addPracticeArea: (area: Omit<PracticeArea, 'id'>) => Promise<void>;
+  updatePracticeArea: (id: string, data: Partial<PracticeArea>) => Promise<void>;
+  deletePracticeArea: (id: string) => Promise<void>;
+
   faqs: FAQ[];
-  addFAQ: (faq: Omit<FAQ, 'id'>) => void;
-  updateFAQ: (id: string, data: Partial<FAQ>) => void;
-  deleteFAQ: (id: string) => void;
+  addFAQ: (faq: Omit<FAQ, 'id'>) => Promise<void>;
+  updateFAQ: (id: string, data: Partial<FAQ>) => Promise<void>;
+  deleteFAQ: (id: string) => Promise<void>;
+
+  banners: Banner[];
+  addBanner: (banner: Omit<Banner, 'id'>) => Promise<void>;
+  updateBanner: (id: string, data: Partial<Banner>) => Promise<void>;
+  deleteBanner: (id: string) => Promise<void>;
+
+  stats: Stat[];
+  addStat: (stat: Omit<Stat, 'id'>) => Promise<void>;
+  updateStat: (id: string, data: Partial<Stat>) => Promise<void>;
+  deleteStat: (id: string) => Promise<void>;
+
+  statsSetup: StatsSetup;
+  updateStatsSetup: (data: Partial<StatsSetup>) => Promise<void>;
+
+  // Novos: Testimonials
+  testimonials: Testimonial[];
+  addTestimonial: (data: Omit<Testimonial, 'id'>) => Promise<void>;
+  updateTestimonial: (id: string, data: Partial<Testimonial>) => Promise<void>;
+  deleteTestimonial: (id: string) => Promise<void>;
+
+  // Novos: Contact (Inbox do Admin + Envio Público)
+  contactMessages: ContactMessage[]; // Lista para o Admin
+  sendContactMessage: (data: Omit<ContactMessage, 'id'>) => Promise<void>; // Função Pública
+  deleteContactMessage: (id: string) => Promise<void>; // Função Admin
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
-const defaultData = {
-  name: 'DT Advocacia e Consultoria Jurídica',
-  about: {
-    id: '1',
-    title: 'Sobre o Escritório',
-    description: 'Somos um escritório de advocacia comprometido com a excelência e ética profissional.',
-    mission: 'Oferecer serviços jurídicos de alta qualidade com ética e comprometimento.',
-    vision: 'Ser referência em advocacia, reconhecidos pela excelência e inovação.',
-    values: ['Ética', 'Transparência', 'Comprometimento', 'Excelência']
-  },
-  team: [
-    {
-      id: '1',
-      name: 'Diêgo Thales',
-      role: 'Advogado Sócio Proprietário',
-      bio: 'Especialista em Direito Civil com mais de 8 anos de experiência.',
-      imageUrl: diego,
-      specialties: ['Direito Civil', 'Direito Contratual']
-    },
-    {
-      id: '2',
-      name: 'Jonatas',
-      role: 'Advogado',
-      bio: 'Advogado especializado em Direito Civil.',
-      imageUrl: jonatas,
-      specialties: ['Direito Trabalhista', 'Direito Previdenciário']
-    },
-    {
-      id: '3',
-      name: 'Heloisa',
-      role: 'Advogada Estagiária',
-      bio: 'Estagiária em Direito Civil com mais de 8 anos de experiência.',
-      imageUrl: heloisa,
-      specialties: ['Direito Civil', 'Direito Contratual']
+const defaultAbout: AboutOffice = { id: '0', title: '', description: '', mission: '', vision: '', values: [] };
+
+// Função auxiliar para criar FormData
+const createFormData = (data: any, fileField: string = 'image') => {
+  const formData = new FormData();
+  Object.keys(data).forEach(key => {
+    // Se for o arquivo, e ele existir, anexa
+    if (key === 'imageFile' && data[key]) {
+      formData.append(fileField, data[key]);
     }
-  ],
-  practiceAreas: [
-    {
-      id: '1',
-      title: 'Direito Civil',
-      description: 'Assessoria completa em questões civis, contratos e responsabilidade civil.',
-      icon: 'Scale'
-    },
-    {
-      id: '2',
-      title: 'Direito Trabalhista',
-      description: 'Defesa dos direitos trabalhistas, ações e consultoria preventiva.',
-      icon: 'Briefcase'
-    },
-    {
-      id: '3',
-      title: 'Direito de Família',
-      description: 'Divórcios, guarda, pensão alimentícia e partilha de bens.',
-      icon: 'Users'
-    },
-    {
-      id: '4',
-      title: 'Direito Criminal',
-      description: 'Defesa criminal em todas as esferas, com ética e profissionalismo.',
-      icon: 'Shield'
+    // Ignora campos undefined/null ou o imageFile que já tratamos
+    else if (key !== 'imageFile' && data[key] !== undefined && data[key] !== null) {
+      // Se for array, envia como string JSON para evitar que o FormData mude para "item1,item2"
+      const value = Array.isArray(data[key]) ? JSON.stringify(data[key]) : data[key];
+      formData.append(key, value);
     }
-  ],
-  faqs: [
-    {
-      id: '1',
-      question: 'Como funciona a primeira consulta?',
-      answer: 'A primeira consulta é uma reunião para entender seu caso, esclarecer dúvidas e apresentar as possíveis soluções jurídicas.'
-    },
-    {
-      id: '2',
-      question: 'Quais são as formas de pagamento?',
-      answer: 'Aceitamos diversas formas de pagamento: à vista, parcelado, cartão de crédito e débito.'
-    },
-    {
-      id: '3',
-      question: 'Quanto tempo leva um processo?',
-      answer: 'O tempo varia conforme o tipo de processo e a complexidade do caso. Durante a consulta, podemos dar uma estimativa mais precisa.'
-    }
-  ]
+  });
+  return formData;
 };
 
 export function DataProvider({ children }: { children: ReactNode }) {
-  const [name, setName] = useState(() => {
-    const saved = localStorage.getItem('data_name');
-    return saved || defaultData.name;
-  });
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const { token, logout } = useAuth();
 
-  const [about, setAbout] = useState<AboutOffice>(() => {
-    const saved = localStorage.getItem('data_about');
-    return saved ? JSON.parse(saved) : defaultData.about;
-  });
+  const authenticatedFetch = async (url: string, options: RequestInit = {}) => {
+    const headers = {
+      ...options.headers,
+      'Authorization': token ? `Bearer ${token}` : '',
+    };
 
-  const [team, setTeam] = useState<TeamMember[]>(() => {
-    const saved = localStorage.getItem('data_team');
-    return saved ? JSON.parse(saved) : defaultData.team;
-  });
+    const res = await fetch(url, { ...options, headers });
 
-  const [practiceAreas, setPracticeAreas] = useState<PracticeArea[]>(() => {
-    const saved = localStorage.getItem('data_practiceAreas');
-    return saved ? JSON.parse(saved) : defaultData.practiceAreas;
-  });
+    if (res.status === 401) {
+      logout();
+    }
 
-  const [faqs, setFaqs] = useState<FAQ[]>(() => {
-    const saved = localStorage.getItem('data_faqs');
-    return saved ? JSON.parse(saved) : defaultData.faqs;
-  });
+    return res;
+  };
 
+  const [name, setName] = useState('DT Advocacia e Consultoria Jurídica');
+
+  // STATES
+  const [about, setAbout] = useState<AboutOffice>(defaultAbout);
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [practiceAreas, setPracticeAreas] = useState<PracticeArea[]>([]);
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
+  const [banners, setBanners] = useState<Banner[]>([]);
+  const [stats, setStats] = useState<Stat[]>([]);
+  const [statsSetup, setStatsSetup] = useState<StatsSetup>({ backgroundImageUrl: '' });
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
+
+  // --- FETCHERS ---
+  const fetchAbout = async () => {
+    try {
+      const res = await authenticatedFetch(`${apiUrl}/about`);
+      if (res.ok) {
+        const data = await res.json();
+        setAbout({
+          ...data,
+          imageUrl: data.imageUrl || data.image_url || diegoAbout
+        });
+      }
+    } catch (e) { console.error(e); }
+  };
+  const fetchTeam = async () => {
+    try {
+      const res = await authenticatedFetch(`${apiUrl}/team`);
+      if (res.ok) {
+        const data = await res.json();
+        setTeam(data.map((item: any) => {
+          let fallback = '';
+          const lowName = item.name.toLowerCase();
+          if (lowName.includes('diego')) fallback = diegoTeam;
+          else if (lowName.includes('jonatas')) fallback = jonatasTeam;
+          else if (lowName.includes('heloisa')) fallback = heloisaTeam;
+
+          return { ...item, imageUrl: item.imageUrl || item.image_url || fallback };
+        }));
+      }
+    } catch (e) { console.error(e); }
+  };
+  const fetchAreas = async () => {
+    try { const res = await authenticatedFetch(`${apiUrl}/practice-areas`); if (res.ok) setPracticeAreas(await res.json()); } catch (e) { console.error(e); }
+  };
+  const fetchFaqs = async () => {
+    try { const res = await authenticatedFetch(`${apiUrl}/faqs`); if (res.ok) setFaqs(await res.json()); } catch (e) { console.error(e); }
+  };
+  const fetchBanners = async () => {
+    try {
+      const res = await authenticatedFetch(`${apiUrl}/banners`);
+      if (res.ok) {
+        const data = await res.json();
+        const fallbackBanners = [banner1, banner2, banner3];
+        setBanners(data.map((item: any, idx: number) => ({
+          ...item,
+          imageUrl: item.imageUrl || item.image_url || fallbackBanners[idx % 3]
+        })));
+      }
+    } catch (e) { console.error(e); }
+  };
+  const fetchStats = async () => {
+    try { const res = await authenticatedFetch(`${apiUrl}/stats`); if (res.ok) setStats(await res.json()); } catch (e) { console.error(e); }
+  };
+  const fetchStatsSetup = async () => {
+    try {
+      const res = await authenticatedFetch(`${apiUrl}/stats-setup`);
+      if (res.ok) {
+        const data = await res.json();
+        setStatsSetup({
+          ...data,
+          backgroundImageUrl: data.backgroundImageUrl || data.background_image_url || statsBackground
+        });
+      }
+    } catch (e) { console.error(e); }
+  };
+  const fetchTestimonials = async () => {
+    try {
+      const res = await authenticatedFetch(`${apiUrl}/testimonials`);
+      if (res.ok) {
+        const data = await res.json();
+        setTestimonials(data.map((item: any) => {
+          let fallback = '';
+          const lowName = item.name.toLowerCase();
+          if (lowName.includes('diego')) fallback = diegoTestimonial;
+          else if (lowName.includes('jonatas')) fallback = jonatasTestimonial;
+          else if (lowName.includes('heloisa')) fallback = heloisaTestimonial;
+
+          return { ...item, avatar: item.avatar || item.image_url || fallback };
+        }));
+      }
+    } catch (e) { console.error(e); }
+  };
+  const fetchContacts = async () => {
+    try {
+      const res = await authenticatedFetch(`${apiUrl}/contacts`);
+      if (res.ok) setContactMessages(await res.json());
+    } catch (e) { console.error(e); }
+  };
+
+  // Carrega tudo ao iniciar
   useEffect(() => {
-    localStorage.setItem('data_name', name);
-  }, [name]);
+    fetchAbout();
+    fetchTeam();
+    fetchAreas();
+    fetchFaqs();
+    fetchBanners();
+    fetchStats();
+    fetchStatsSetup();
+    fetchTestimonials();
+    fetchContacts();
+  }, []);
 
-  useEffect(() => {
-    localStorage.setItem('data_about', JSON.stringify(about));
-  }, [about]);
+  // --- ACTIONS ---
 
-  useEffect(() => {
-    localStorage.setItem('data_team', JSON.stringify(team));
-  }, [team]);
+  const updateName = (newName: string) => { setName(newName); };
 
-  useEffect(() => {
-    localStorage.setItem('data_practiceAreas', JSON.stringify(practiceAreas));
-  }, [practiceAreas]);
+  // ABOUT
+  const updateAbout = async (data: Partial<AboutOffice>) => {
+    const res = await authenticatedFetch(`${apiUrl}/about`, {
+      method: 'PUT',
+      body: createFormData(data, 'image')
+    });
 
-  useEffect(() => {
-    localStorage.setItem('data_faqs', JSON.stringify(faqs));
-  }, [faqs]);
-
-  const updateName = (newName: string) => {
-    setName(newName);
+    if (res.ok) {
+      fetchAbout();
+    } else {
+      const errorData = await res.json();
+      throw new Error(errorData.error || 'Erro ao atualizar informações do escritório');
+    }
   };
 
-  const updateAbout = (data: Partial<AboutOffice>) => {
-    setAbout(prev => ({ ...prev, ...data }));
+  // TEAM
+  const addTeamMember = async (member: Omit<TeamMember, 'id'>) => {
+    await authenticatedFetch(`${apiUrl}/team`, {
+      method: 'POST',
+      body: createFormData(member, 'image')
+    });
+    fetchTeam();
+  };
+  const updateTeamMember = async (id: string, data: Partial<TeamMember>) => {
+    await authenticatedFetch(`${apiUrl}/team/${id}`, {
+      method: 'PUT',
+      body: createFormData(data, 'image')
+    });
+    fetchTeam();
+  };
+  const deleteTeamMember = async (id: string) => { await authenticatedFetch(`${apiUrl}/team/${id}`, { method: 'DELETE' }); fetchTeam(); };
+
+  // AREAS
+  const addPracticeArea = async (area: Omit<PracticeArea, 'id'>) => {
+    await authenticatedFetch(`${apiUrl}/practice-areas`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(area) });
+    fetchAreas();
+  };
+  const updatePracticeArea = async (id: string, data: Partial<PracticeArea>) => {
+    await authenticatedFetch(`${apiUrl}/practice-areas/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    fetchAreas();
+  };
+  const deletePracticeArea = async (id: string) => { await authenticatedFetch(`${apiUrl}/practice-areas/${id}`, { method: 'DELETE' }); fetchAreas(); };
+
+  // FAQS
+  const addFAQ = async (faq: Omit<FAQ, 'id'>) => {
+    await authenticatedFetch(`${apiUrl}/faqs`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(faq) });
+    fetchFaqs();
+  };
+  const updateFAQ = async (id: string, data: Partial<FAQ>) => {
+    await authenticatedFetch(`${apiUrl}/faqs/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    fetchFaqs();
+  };
+  const deleteFAQ = async (id: string) => { await authenticatedFetch(`${apiUrl}/faqs/${id}`, { method: 'DELETE' }); fetchFaqs(); };
+
+  // BANNERS
+  const addBanner = async (banner: Partial<Banner> & { imageFile?: File }) => {
+    await authenticatedFetch(`${apiUrl}/banners`, {
+      method: 'POST',
+      body: createFormData(banner, 'image')
+    });
+    fetchBanners();
+  };
+  const updateBanner = async (id: string, data: Partial<Banner> & { imageFile?: File }) => {
+    await authenticatedFetch(`${apiUrl}/banners/${id}`, {
+      method: 'PUT',
+      body: createFormData(data, 'image')
+    });
+    fetchBanners();
+  };
+  const deleteBanner = async (id: string) => { await authenticatedFetch(`${apiUrl}/banners/${id}`, { method: 'DELETE' }); fetchBanners(); };
+
+  // STATS
+  const addStat = async (stat: Omit<Stat, 'id'>) => {
+    await authenticatedFetch(`${apiUrl}/stats`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(stat) });
+    fetchStats();
+  };
+  const updateStat = async (id: string, data: Partial<Stat>) => {
+    await authenticatedFetch(`${apiUrl}/stats/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    fetchStats();
+  };
+  const deleteStat = async (id: string) => { await authenticatedFetch(`${apiUrl}/stats/${id}`, { method: 'DELETE' }); fetchStats(); };
+
+  // STATS SETUP
+  const updateStatsSetup = async (data: Partial<StatsSetup> & { imageFile?: File }) => {
+    await authenticatedFetch(`${apiUrl}/stats-setup`, {
+      method: 'PUT',
+      body: createFormData(data, 'backgroundImage')
+    });
+    fetchStatsSetup();
   };
 
-  const addTeamMember = (member: Omit<TeamMember, 'id'>) => {
-    const newMember = { ...member, id: Date.now().toString() };
-    setTeam(prev => [...prev, newMember]);
+  // TESTIMONIALS
+  const addTestimonial = async (data: Partial<Testimonial> & { imageFile?: File }) => {
+    await authenticatedFetch(`${apiUrl}/testimonials`, {
+      method: 'POST',
+      body: createFormData(data, 'avatar')
+    });
+    fetchTestimonials();
   };
-
-  const updateTeamMember = (id: string, data: Partial<TeamMember>) => {
-    setTeam(prev => prev.map(m => m.id === id ? { ...m, ...data } : m));
+  const updateTestimonial = async (id: string, data: Partial<Testimonial> & { imageFile?: File }) => {
+    await authenticatedFetch(`${apiUrl}/testimonials/${id}`, {
+      method: 'PUT',
+      body: createFormData(data, 'avatar')
+    });
+    fetchTestimonials();
   };
+  const deleteTestimonial = async (id: string) => { await authenticatedFetch(`${apiUrl}/testimonials/${id}`, { method: 'DELETE' }); fetchTestimonials(); };
 
-  const deleteTeamMember = (id: string) => {
-    setTeam(prev => prev.filter(m => m.id !== id));
+  // CONTACT
+  const sendContactMessage = async (data: Omit<ContactMessage, 'id'>) => {
+    const res = await authenticatedFetch(`${apiUrl}/contacts`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    if (!res.ok) throw new Error('Erro ao enviar mensagem');
   };
-
-  const addPracticeArea = (area: Omit<PracticeArea, 'id'>) => {
-    const newArea = { ...area, id: Date.now().toString() };
-    setPracticeAreas(prev => [...prev, newArea]);
-  };
-
-  const updatePracticeArea = (id: string, data: Partial<PracticeArea>) => {
-    setPracticeAreas(prev => prev.map(a => a.id === id ? { ...a, ...data } : a));
-  };
-
-  const deletePracticeArea = (id: string) => {
-    setPracticeAreas(prev => prev.filter(a => a.id !== id));
-  };
-
-  const addFAQ = (faq: Omit<FAQ, 'id'>) => {
-    const newFaq = { ...faq, id: Date.now().toString() };
-    setFaqs(prev => [...prev, newFaq]);
-  };
-
-  const updateFAQ = (id: string, data: Partial<FAQ>) => {
-    setFaqs(prev => prev.map(f => f.id === id ? { ...f, ...data } : f));
-  };
-
-  const deleteFAQ = (id: string) => {
-    setFaqs(prev => prev.filter(f => f.id !== id));
+  const deleteContactMessage = async (id: string) => {
+    await authenticatedFetch(`${apiUrl}/contacts/${id}`, { method: 'DELETE' });
+    fetchContacts();
   };
 
   return (
-    <DataContext.Provider
-      value={{
-        name,
-        updateName,
-        about,
-        updateAbout,
-        team,
-        addTeamMember,
-        updateTeamMember,
-        deleteTeamMember,
-        practiceAreas,
-        addPracticeArea,
-        updatePracticeArea,
-        deletePracticeArea,
-        faqs,
-        addFAQ,
-        updateFAQ,
-        deleteFAQ
-      }}
-    >
+    <DataContext.Provider value={{
+      name, updateName,
+      about, updateAbout,
+      team, addTeamMember, updateTeamMember, deleteTeamMember,
+      practiceAreas, addPracticeArea, updatePracticeArea, deletePracticeArea,
+      faqs, addFAQ, updateFAQ, deleteFAQ,
+      banners, addBanner, updateBanner, deleteBanner,
+      stats, addStat, updateStat, deleteStat,
+      statsSetup, updateStatsSetup,
+      testimonials, addTestimonial, updateTestimonial, deleteTestimonial,
+      contactMessages, sendContactMessage, deleteContactMessage
+    }}>
       {children}
     </DataContext.Provider>
   );
@@ -257,8 +379,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
 export function useData() {
   const context = useContext(DataContext);
-  if (context === undefined) {
-    throw new Error('useData must be used within a DataProvider');
-  }
+  if (context === undefined) throw new Error('useData must be used within a DataProvider');
   return context;
 }

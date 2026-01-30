@@ -7,18 +7,22 @@ export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     setError('');
 
-    const success = login(email, password);
-    if (success) {
+    try {
+      await login(email, password);
       navigate('/admin');
-    } else {
-      setError('Email ou senha inválidos');
+    } catch (err: any) {
+      setError(err.message || 'Email ou senha inválidos');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,17 +76,22 @@ export function Login() {
 
             <button
               type="submit"
-              className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium"
+              disabled={loading}
+              className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Entrar
+              {loading ? 'Entrando...' : 'Entrar'}
             </button>
           </form>
 
-          <div className="mt-6 p-4 bg-secondary/50 rounded-lg">
-            <p className="text-sm text-muted-foreground text-center">
-              <strong className="text-foreground">Credenciais de teste:</strong><br />
-              Email: admin@advocacia.com<br />
-              Senha: admin123
+          <div className="mt-6 text-center">
+            <p className="text-sm text-muted-foreground">
+              Não tem uma conta?{' '}
+              <button
+                onClick={() => navigate('/register')}
+                className="text-primary hover:underline font-medium"
+              >
+                Registre-se
+              </button>
             </p>
           </div>
         </div>

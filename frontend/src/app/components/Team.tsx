@@ -56,10 +56,8 @@ export function Team() {
                                 Isso garante que a área da imagem seja IGUAL em todos os cards, alinhando o início do texto. */}
                             <div className="w-full aspect-[3/4] overflow-hidden relative border-b border-border/30">
                                 <img
-                                    src={member.imageUrl}
+                                    src={member.imageUrl.startsWith('http') ? member.imageUrl : `${import.meta.env.VITE_API_URL}${member.imageUrl}`}
                                     alt={member.name}
-                                    // object-cover: Corta o excesso lateral sem distorcer.
-                                    // object-top: Garante que o rosto (geralmente no topo) não seja cortado.
                                     className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                                 />
                                 {/* Gradiente chique no hover */}
