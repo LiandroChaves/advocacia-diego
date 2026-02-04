@@ -1,12 +1,19 @@
 import React from 'react';
 import { useData } from '@/app/context/DataContext';
+import statsBackground from '@/assets/escritorio.png';
 
 export function StatsSection() {
     const { stats, statsSetup } = useData();
 
     const bgImage = statsSetup?.backgroundImageUrl
-        ? (statsSetup.backgroundImageUrl.startsWith('http') ? statsSetup.backgroundImageUrl : `${import.meta.env.VITE_API_URL}${statsSetup.backgroundImageUrl}`)
-        : '/assets/escritorio.png';
+        ? (
+            statsSetup.backgroundImageUrl.startsWith('http') || statsSetup.backgroundImageUrl.startsWith('data:')
+                ? statsSetup.backgroundImageUrl
+                : statsSetup.backgroundImageUrl.startsWith('/') || statsSetup.backgroundImageUrl.includes('src/assets')
+                    ? statsSetup.backgroundImageUrl
+                    : `${import.meta.env.VITE_API_URL}${statsSetup.backgroundImageUrl}`
+        )
+        : statsBackground;
 
     if (!stats || stats.length === 0) return null;
 

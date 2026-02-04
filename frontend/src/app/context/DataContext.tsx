@@ -10,19 +10,138 @@ import diegoAbout from '@/assets/diego-copia.png';
 import diegoTeam from '@/assets/diego.png';
 import jonatasTeam from '@/assets/jonatas.png';
 import heloisaTeam from '@/assets/heloisa.png';
+const fallbackTeam: TeamMember[] = [
+  {
+    id: 'f-diego',
+    name: 'Diego',
+    role: 'Advogado Sênior',
+    bio: 'Especialista em Direito Civil e Estratégico, com foco em soluções inovadoras para casos complexos.',
+    imageUrl: diegoTeam,
+    specialties: ['Direito Civil', 'Estratégia Jurídica']
+  },
+  {
+    id: 'f-jonatas',
+    name: 'Jonatas',
+    role: 'Especialista Jurídico',
+    bio: 'Vasta experiência em negociações e direito empresarial, garantindo segurança jurídica aos parceiros.',
+    imageUrl: jonatasTeam,
+    specialties: ['Direito Empresarial', 'Negociação']
+  },
+  {
+    id: 'f-heloisa',
+    name: 'Heloisa',
+    role: 'Consultora Jurídica',
+    bio: 'Focada em direito humanizado e resoluções céleres, priorizando sempre o bem-estar do cliente.',
+    imageUrl: heloisaTeam,
+    specialties: ['Direito de Família', 'Consultoria']
+  }
+];
 
 //testimonials
 import diegoTestimonial from '@/assets/diego.png';
 import jonatasTestimonial from '@/assets/jonatas.png';
 import heloisaTestimonial from '@/assets/heloisa.png';
 
+const fallbackTestimonials: Testimonial[] = [
+  {
+    id: 't1',
+    name: 'Carlos Oliveira',
+    role: 'Empresário',
+    content: 'O atendimento superou minhas expectativas. Resolveram uma questão contratual complexa com agilidade e transparência total.',
+    avatar: diegoTestimonial
+  },
+  {
+    id: 't2',
+    name: 'Ana Paula Souza',
+    role: 'Cliente Civil',
+    content: 'Excelente profissional. Senti muita segurança desde a primeira consulta. Recomendo fortemente para quem busca ética e resultados.',
+    avatar: heloisaTestimonial
+  },
+  {
+    id: 't3',
+    name: 'Ricardo Silva',
+    role: 'Diretor Comercial',
+    content: 'Equipe de alto calibre. A visão estratégica aplicada ao meu caso fez toda a diferença no desfecho positivo.',
+    avatar: jonatasTestimonial
+  }
+];
+
 //banners
 import banner1 from '@/assets/banner1.jpg';
 import banner2 from '@/assets/banner2.jpg';
 import banner3 from '@/assets/banner3.jpg';
 
+const fallbackBannersList = [
+  { id: 'f1', imageUrl: banner1, title: 'DT Advocacia', description: 'Defendendo seus direitos com ética', active: true },
+  { id: 'f2', imageUrl: banner2, title: 'Consultoria Jurídica', description: 'Comprometimento e transparência', active: true },
+  { id: 'f3', imageUrl: banner3, title: 'Excelência Jurídica', description: 'Sua causa é a nossa prioridade', active: true },
+];
+
 //stats
 import statsBackground from '@/assets/escritorio.png';
+
+const fallbackStats: Stat[] = [
+  { id: 's1', label: 'Processos Ativos', value: '300+' },
+  { id: 's2', label: 'Clientes Satisfeitos', value: '200+' },
+  { id: 's3', label: 'Casos Resolvidos', value: '500+' },
+];
+
+// MVV
+const defaultAbout: AboutOffice = {
+  id: '0',
+  title: 'Sobre mim',
+  description: 'Com 8 anos de experiência na advocacia, este profissional consolidou uma carreira marcada por comprometimento, ética e resultados expressivos. Atuando em diversas áreas do Direito, desenvolveu habilidades estratégicas para análise de casos complexos, negociação e defesa dos interesses de seus clientes. Sua trajetória é pautada pela constante atualização jurídica, garantindo soluções eficazes e seguras.',
+  mission: 'Atuar com excelência na advocacia, oferecendo serviços jurídicos de alta qualidade, pautados na ética, transparência e compromisso com o cliente. Buscar soluções inovadoras e eficazes, sempre em conformidade com a legislação vigente, visando a satisfação e segurança dos clientes.',
+  vision: 'Ser referência na advocacia, reconhecido pela excelência técnica, atendimento humanizado e resultados expressivos. Expandir a atuação para novas áreas e regiões, consolidando uma reputação de confiança e competência no mercado jurídico.',
+  values: ['Ética inegociável', 'Transparência absoluta', 'Excelência técnica', 'Foco no cliente']
+};
+
+// Pratice Areas
+const fallbackAreas: PracticeArea[] = [
+  {
+    id: 'p1',
+    title: 'Direito Civil',
+    description: 'Assessoria completa em contratos, responsabilidade civil e direitos reais.',
+    icon: 'Scale'
+  },
+  {
+    id: 'p2',
+    title: 'Direito de Família',
+    description: 'Resolução de conflitos familiares com foco na mediação e proteção de direitos.',
+    icon: 'Heart'
+  },
+  {
+    id: 'p3',
+    title: 'Direito do Trabalho',
+    description: 'Defesa técnica para garantir o cumprimento da legislação trabalhista.',
+    icon: 'Briefcase'
+  },
+  {
+    id: 'p4',
+    title: 'Direito Empresarial',
+    description: 'Consultoria estratégica para empresas de pequeno a grande porte.',
+    icon: 'Building2'
+  }
+];
+
+// FAQ
+const fallbackFaqs: FAQ[] = [
+  {
+    id: 'q1',
+    question: 'Quais documentos preciso para uma consulta inicial?',
+    answer: 'Geralmente, RG, CPF, comprovante de residência e todos os documentos relacionados ao seu caso (contratos, fotos, mensagens ou notificações).'
+  },
+  {
+    id: 'q2',
+    question: 'Quanto tempo demora um processo judicial?',
+    answer: 'O tempo varia conforme a complexidade da causa e a agilidade do Judiciário. Durante a consultoria, analisamos as perspectivas específicas do seu caso.'
+  },
+  {
+    id: 'q3',
+    question: 'Vocês atendem apenas presencialmente?',
+    answer: 'Não! Atendemos clientes em todo o país de forma digital, realizando reuniões por vídeo e peticionamento eletrônico com total segurança.'
+  }
+];
 
 // --- INTERFACES ---
 export interface AboutOffice { id: string; title: string; description: string; mission: string; vision: string; values: string[]; imageUrl?: string; imageFile?: File }
@@ -84,8 +203,6 @@ interface DataContextType {
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
-const defaultAbout: AboutOffice = { id: '0', title: '', description: '', mission: '', vision: '', values: [] };
-
 // Função auxiliar para criar FormData
 const createFormData = (data: any, fileField: string = 'image') => {
   const formData = new FormData();
@@ -127,13 +244,15 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   // STATES
   const [about, setAbout] = useState<AboutOffice>(defaultAbout);
-  const [team, setTeam] = useState<TeamMember[]>([]);
-  const [practiceAreas, setPracticeAreas] = useState<PracticeArea[]>([]);
-  const [faqs, setFaqs] = useState<FAQ[]>([]);
-  const [banners, setBanners] = useState<Banner[]>([]);
-  const [stats, setStats] = useState<Stat[]>([]);
-  const [statsSetup, setStatsSetup] = useState<StatsSetup>({ backgroundImageUrl: '' });
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [team, setTeam] = useState<TeamMember[]>(fallbackTeam);
+  const [practiceAreas, setPracticeAreas] = useState<PracticeArea[]>(fallbackAreas);
+  const [faqs, setFaqs] = useState<FAQ[]>(fallbackFaqs);
+  const [banners, setBanners] = useState<Banner[]>(fallbackBannersList);
+  const [stats, setStats] = useState<Stat[]>(fallbackStats);
+  const [statsSetup, setStatsSetup] = useState<StatsSetup>({
+    backgroundImageUrl: statsBackground
+  });
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(fallbackTestimonials);
   const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
 
   // --- FETCHERS ---
@@ -143,50 +262,100 @@ export function DataProvider({ children }: { children: ReactNode }) {
       if (res.ok) {
         const data = await res.json();
         setAbout({
+          ...defaultAbout,
           ...data,
           imageUrl: data.imageUrl || data.image_url || diegoAbout
         });
       }
-    } catch (e) { console.error(e); }
+    } catch (e) {
+      console.warn("Backend offline: Mantendo informações institucionais padrão.");
+      // Não faz nada, o state já tem o defaultAbout
+    }
   };
   const fetchTeam = async () => {
     try {
       const res = await authenticatedFetch(`${apiUrl}/team`);
       if (res.ok) {
         const data = await res.json();
-        setTeam(data.map((item: any) => {
-          let fallback = '';
-          const lowName = item.name.toLowerCase();
-          if (lowName.includes('diego')) fallback = diegoTeam;
-          else if (lowName.includes('jonatas')) fallback = jonatasTeam;
-          else if (lowName.includes('heloisa')) fallback = heloisaTeam;
 
-          return { ...item, imageUrl: item.imageUrl || item.image_url || fallback };
-        }));
+        // Se a API trouxe gente, a gente mapeia e atualiza
+        if (Array.isArray(data) && data.length > 0) {
+          setTeam(data.map((item: any) => {
+            let fallbackImg = '';
+            const lowName = item.name.toLowerCase();
+            if (lowName.includes('diego')) fallbackImg = diegoTeam;
+            else if (lowName.includes('jonatas')) fallbackImg = jonatasTeam;
+            else if (lowName.includes('heloisa')) fallbackImg = heloisaTeam;
+
+            return {
+              ...item,
+              imageUrl: item.imageUrl || item.image_url || fallbackImg || diegoTeam
+            };
+          }));
+        }
       }
-    } catch (e) { console.error(e); }
+    } catch (e) {
+      console.warn("Backend offline: Mantendo equipe de fallback.");
+    }
   };
   const fetchAreas = async () => {
-    try { const res = await authenticatedFetch(`${apiUrl}/practice-areas`); if (res.ok) setPracticeAreas(await res.json()); } catch (e) { console.error(e); }
+    try {
+      const res = await authenticatedFetch(`${apiUrl}/practice-areas`);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setPracticeAreas(data);
+        }
+      }
+    } catch (e) {
+      console.warn("Backend offline: Mantendo áreas de atuação padrão.");
+    }
   };
   const fetchFaqs = async () => {
-    try { const res = await authenticatedFetch(`${apiUrl}/faqs`); if (res.ok) setFaqs(await res.json()); } catch (e) { console.error(e); }
+    try {
+      const res = await authenticatedFetch(`${apiUrl}/faqs`);
+      if (res.ok) {
+        const data = await res.json();
+        // Se o banco tiver perguntas cadastradas, a gente atualiza
+        if (Array.isArray(data) && data.length > 0) {
+          setFaqs(data);
+        }
+      }
+    } catch (e) {
+      console.warn("Backend offline: Mantendo FAQ de fallback.");
+      // O estado permanece com o fallbackFaqs definido no useState
+    }
   };
   const fetchBanners = async () => {
     try {
       const res = await authenticatedFetch(`${apiUrl}/banners`);
       if (res.ok) {
         const data = await res.json();
-        const fallbackBanners = [banner1, banner2, banner3];
-        setBanners(data.map((item: any, idx: number) => ({
-          ...item,
-          imageUrl: item.imageUrl || item.image_url || fallbackBanners[idx % 3]
-        })));
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.length > 0) {
+            setBanners(data);
+          }
+        }
       }
-    } catch (e) { console.error(e); }
+    } catch (e) {
+      console.error("Erro ao buscar banners, mantendo fallbacks:", e);
+    }
   };
   const fetchStats = async () => {
-    try { const res = await authenticatedFetch(`${apiUrl}/stats`); if (res.ok) setStats(await res.json()); } catch (e) { console.error(e); }
+    try {
+      const res = await authenticatedFetch(`${apiUrl}/stats`);
+      if (res.ok) {
+        const data = await res.json();
+        // Se a API retornar um array com conteúdo, a gente usa
+        if (Array.isArray(data) && data.length > 0) {
+          setStats(data);
+        }
+      }
+    } catch (e) {
+      console.warn("Backend de Stats offline, mantendo números padrão.");
+    }
   };
   const fetchStatsSetup = async () => {
     try {
@@ -195,27 +364,40 @@ export function DataProvider({ children }: { children: ReactNode }) {
         const data = await res.json();
         setStatsSetup({
           ...data,
+          // Se a API responder mas não vier imagem, usa o fallback local
           backgroundImageUrl: data.backgroundImageUrl || data.background_image_url || statsBackground
         });
       }
-    } catch (e) { console.error(e); }
+    } catch (e) {
+      // Se der erro de conexão (offline), o estado continua sendo o statsBackground inicial
+      console.warn("Servidor offline: usando imagem de fundo padrão para Stats.");
+    }
   };
   const fetchTestimonials = async () => {
     try {
       const res = await authenticatedFetch(`${apiUrl}/testimonials`);
       if (res.ok) {
         const data = await res.json();
-        setTestimonials(data.map((item: any) => {
-          let fallback = '';
-          const lowName = item.name.toLowerCase();
-          if (lowName.includes('diego')) fallback = diegoTestimonial;
-          else if (lowName.includes('jonatas')) fallback = jonatasTestimonial;
-          else if (lowName.includes('heloisa')) fallback = heloisaTestimonial;
 
-          return { ...item, avatar: item.avatar || item.image_url || fallback };
-        }));
+        if (Array.isArray(data) && data.length > 0) {
+          setTestimonials(data.map((item: any) => {
+            let fallbackImg = '';
+            const lowName = item.name.toLowerCase();
+            // Lógica de fallback de imagem baseada no nome (se você tiver fotos padrão)
+            if (lowName.includes('diego')) fallbackImg = diegoTestimonial;
+            else if (lowName.includes('jonatas')) fallbackImg = jonatasTestimonial;
+            else if (lowName.includes('heloisa')) fallbackImg = heloisaTestimonial;
+
+            return {
+              ...item,
+              avatar: item.avatar || item.image_url || fallbackImg || item.name.substring(0, 2).toUpperCase()
+            };
+          }));
+        }
       }
-    } catch (e) { console.error(e); }
+    } catch (e) {
+      console.warn("Backend offline: Mantendo depoimentos de fallback.");
+    }
   };
   const fetchContacts = async () => {
     try {

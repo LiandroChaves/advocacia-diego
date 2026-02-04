@@ -35,7 +35,7 @@ export function AboutMe() {
                     </h2>
 
                     <p className="text-base md:text-lg leading-relaxed text-foreground/80 text-justify md:text-left">
-                        {about.description || 'Com 8 anos de experiência na advocacia...'}
+                        {about.description || 'Com 8 anos de experiência na advocacia, este profissional consolidou uma carreira marcada por comprometimento, ética e resultados expressivos. Atuando em diversas áreas do Direito, desenvolveu habilidades estratégicas para análise de casos complexos, negociação e defesa dos interesses de seus clientes. Sua trajetória é pautada pela constante atualização jurídica, garantindo soluções eficazes e seguras.'}
                     </p>
                 </div>
 

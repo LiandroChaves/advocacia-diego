@@ -18,7 +18,7 @@ export function MVV() {
                 {/* --- 1. INTRODUÇÃO INSTITUCIONAL --- */}
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-                        {about.title}
+                        Sobre o Escritório
                     </h2>
                     {/* Detalhe Dourado */}
                     <div className="h-1 w-20 bg-[#c5a059] mx-auto rounded-full mb-8" />
@@ -26,7 +26,7 @@ export function MVV() {
                     {/* Texto Expandido (A "Linguiça" Premium) */}
                     <div className="max-w-4xl mx-auto space-y-6 text-lg text-muted-foreground leading-relaxed text-justify md:text-center">
                         <p>
-                            {about.description} {richContent.history}
+                            {richContent.history}
                         </p>
                         <p>
                             {richContent.methodology}

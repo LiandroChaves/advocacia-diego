@@ -34,9 +34,19 @@ export function HeroCarousel() {
                 >
                     {/* Imagem de fundo */}
                     <img
-                        src={banner.imageUrl.startsWith('http') ? banner.imageUrl : `${import.meta.env.VITE_API_URL}${banner.imageUrl}`}
+                        src={
+                            // 1. Se for uma URL completa (http) ou Base64 (data:), usa direto
+                            banner.imageUrl.startsWith('http') || banner.imageUrl.startsWith('data:')
+                                ? banner.imageUrl
+                                : // 2. Se a string começar com "/" ou "src", é o fallback do Vite/React
+                                // (Imports de imagem no Vite geralmente viram algo como "/src/assets/...")
+                                banner.imageUrl.startsWith('/') || banner.imageUrl.includes('src/assets')
+                                    ? banner.imageUrl
+                                    : // 3. Se não for nenhum dos acima, aí sim tenta buscar na API
+                                    `${import.meta.env.VITE_API_URL}${banner.imageUrl}`
+                        }
                         alt={banner.title || `Slide ${index + 1}`}
-                        className="absolute inset-0 w-full h-full object-cover object-top md:object-center"
+                        className="absolute inset-0 w-full h-full object-cover"
                     />
 
                     {/* Overlay escuro (Gradiente) pra garantir leitura do texto */}

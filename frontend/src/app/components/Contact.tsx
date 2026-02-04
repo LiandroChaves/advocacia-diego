@@ -72,7 +72,7 @@ export function Contact() {
 
                         <div className="w-full aspect-square bg-card rounded-xl overflow-hidden border border-border shadow-sm relative group">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.918919108919!2d-38.098765!3d-5.116667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMDcnMDAuMCJTIDM4wrAwNSc1NS42Ilc!5e0!3m2!1spt-BR!2sbr!4v1620000000000!5m2!1spt-BR!2sbr"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.7237933654123!2d-38.10245782631498!3d-5.148091752038894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7bbd106b3ce54ab%3A0x5607209385aa4e90!2sR.%20Camilo%20Brasiliense%2C%20363%20-%2002%20-%20Jo%C3%A3o%20XXIII%2C%20Limoeiro%20do%20Norte%20-%20CE%2C%2062930-000!5e0!3m2!1spt-BR!2sbr!4v1770224194392!5m2!1spt-BR!2sbr"
                                 width="100%" height="100%" style={{ border: 0 }} allowFullScreen={true} loading="lazy"
                                 className="transition-all duration-500 hover:scale-103"
                             ></iframe>

@@ -56,7 +56,13 @@ export function Team() {
                                 Isso garante que a área da imagem seja IGUAL em todos os cards, alinhando o início do texto. */}
                             <div className="w-full aspect-[3/4] overflow-hidden relative border-b border-border/30">
                                 <img
-                                    src={member.imageUrl.startsWith('http') ? member.imageUrl : `${import.meta.env.VITE_API_URL}${member.imageUrl}`}
+                                    src={
+                                        member.imageUrl.startsWith('http') || member.imageUrl.startsWith('data:')
+                                            ? member.imageUrl
+                                            : member.imageUrl.startsWith('/') || member.imageUrl.includes('src/assets')
+                                                ? member.imageUrl
+                                                : `${import.meta.env.VITE_API_URL}${member.imageUrl}`
+                                    }
                                     alt={member.name}
                                     className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                                 />

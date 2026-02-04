@@ -46,9 +46,18 @@ export function Testimonials() {
 
                             <div className="flex items-center gap-4 mt-auto">
                                 <div className="h-12 w-12 rounded-full bg-[#0f172a] flex items-center justify-center text-[#c5a059] font-bold border-2 border-[#c5a059] overflow-hidden">
-                                    {/* Se avatar for URL, mostra imagem, senão mostra iniciais */}
                                     {review.avatar?.includes('/') || review.avatar?.includes('http') ? (
-                                        <img src={review.avatar?.startsWith('http') ? review.avatar : `${import.meta.env.VITE_API_URL}${review.avatar}`} alt={review.name} className="w-full h-full object-cover" />
+                                        <img
+                                            src={
+                                                review.avatar?.startsWith('http') || review.avatar?.startsWith('data:')
+                                                    ? review.avatar
+                                                    : review.avatar?.startsWith('/') || review.avatar?.includes('src/assets')
+                                                        ? review.avatar
+                                                        : `${import.meta.env.VITE_API_URL}${review.avatar}`
+                                            }
+                                            alt={review.name}
+                                            className="w-full h-full object-cover"
+                                        />
                                     ) : (
                                         <span>{review.avatar || review.name.substring(0, 2).toUpperCase()}</span>
                                     )}
