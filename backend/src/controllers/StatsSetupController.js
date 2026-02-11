@@ -17,9 +17,9 @@ class StatsSetupController {
 
             if (req.file) {
                 if (setup?.backgroundImageUrl) {
-                    deleteFile(setup.backgroundImageUrl);
+                    await deleteFile(setup.backgroundImageUrl);
                 }
-                data.backgroundImageUrl = `/uploads/${req.file.filename}`;
+                data.backgroundImageUrl = req.file.path;
             }
 
             return res.json(await Service.update(data));

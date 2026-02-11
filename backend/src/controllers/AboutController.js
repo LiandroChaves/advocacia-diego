@@ -16,7 +16,7 @@ class AboutController {
             const data = { ...req.body };
 
             if (req.file) {
-                data.imageUrl = `/uploads/${req.file.filename}`;
+                data.imageUrl = req.file.path;
             }
 
             if (data.values && typeof data.values === 'string') {
@@ -33,7 +33,7 @@ class AboutController {
             }
 
             if (req.file && about.imageUrl) {
-                deleteFile(about.imageUrl);
+                await deleteFile(about.imageUrl);
             }
 
             const updated = await about.update(data);

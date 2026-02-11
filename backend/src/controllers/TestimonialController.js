@@ -16,7 +16,7 @@ class TestimonialController {
             const data = req.body;
 
             if (req.file) {
-                data.avatar = `/uploads/${req.file.filename}`;
+                data.avatar = req.file.path;
             }
 
             const testimonial = await TestimonialService.create(data);
@@ -35,8 +35,8 @@ class TestimonialController {
             const data = req.body
 
             if (req.file) {
-                if (testimonial.avatar) deleteFile(testimonial.avatar);
-                data.avatar = `/uploads/${req.file.filename}`;
+                if (testimonial.avatar) await deleteFile(testimonial.avatar);
+                data.avatar = req.file.path;
             }
 
             const updated = await TestimonialService.update(id, data);
@@ -53,7 +53,7 @@ class TestimonialController {
             const testimonial = await TestimonialService.getById(id);
             if (!testimonial) return res.status(404).json({ error: 'Não encontrado.' });
 
-            deleteFile(testimonial.avatar);
+            await deleteFile(testimonial.avatar);
 
             await TestimonialService.delete(id);
             return res.status(204).send();

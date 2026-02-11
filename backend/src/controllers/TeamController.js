@@ -16,7 +16,7 @@ class TeamController {
             const data = req.body;
 
             if (req.file) {
-                data.imageUrl = `/uploads/${req.file.filename}`;
+                data.imageUrl = req.file.path;
             }
 
             if (data.specialties && typeof data.specialties === 'string') {
@@ -45,9 +45,9 @@ class TeamController {
 
             if (req.file) {
                 if (member.imageUrl) {
-                    deleteFile(member.imageUrl);
+                    await deleteFile(member.imageUrl);
                 }
-                data.imageUrl = `/uploads/${req.file.filename}`;
+                data.imageUrl = req.file.path;
             }
 
             if (data.specialties && typeof data.specialties === 'string') {
@@ -73,7 +73,7 @@ class TeamController {
             if (!member) return res.status(404).json({ error: 'Não encontrado.' });
 
             if (member.imageUrl) {
-                deleteFile(member.imageUrl);
+                await deleteFile(member.imageUrl);
             }
 
             await TeamService.delete(id);

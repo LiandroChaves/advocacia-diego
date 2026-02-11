@@ -12,7 +12,7 @@ class BannerController {
             const data = req.body;
 
             if (req.file) {
-                data.imageUrl = `/uploads/${req.file.filename}`;
+                data.imageUrl = req.file.path;
             }
 
             const banner = await Banner.create(data);
@@ -31,8 +31,8 @@ class BannerController {
             const data = req.body;
 
             if (req.file) {
-                if (banner.imageUrl) deleteFile(banner.imageUrl);
-                data.imageUrl = `/uploads/${req.file.filename}`;
+                if (banner.imageUrl) await deleteFile(banner.imageUrl);
+                data.imageUrl = req.file.path;
             }
 
             const updated = await banner.update(data);
@@ -49,7 +49,7 @@ class BannerController {
             const banner = await Banner.findByPk(id);
             if (!banner) return res.status(404).json({ error: 'Não encontrado.' });
 
-            deleteFile(banner.imageUrl);
+            await deleteFile(banner.imageUrl);
 
             await banner.destroy();
             return res.status(204).send();
