@@ -2,7 +2,6 @@ import { HeroCarousel } from '@/app/components/HeroCarousel';
 import { AboutMe } from '@/app/components/AboutMe';
 import { StatsSection } from '@/app/components/StatsSection';
 import { Testimonials } from '@/app/components/Testimonials';
-import { Contact } from '@/app/components/Contact';
 
 export function Home() {
 
@@ -21,8 +20,6 @@ export function Home() {
       {/* 4. Depoimentos (Impacto visual) */}
       <Testimonials />
 
-      {/* 5. Contato */}
-      <Contact />
     </div>
   );
 }

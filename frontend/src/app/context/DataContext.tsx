@@ -199,6 +199,7 @@ interface DataContextType {
   contactMessages: ContactMessage[]; // Lista para o Admin
   sendContactMessage: (data: Omit<ContactMessage, 'id'>) => Promise<void>; // Função Pública
   deleteContactMessage: (id: string) => Promise<void>; // Função Admin
+  fetchContacts: () => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -571,7 +572,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       stats, addStat, updateStat, deleteStat,
       statsSetup, updateStatsSetup,
       testimonials, addTestimonial, updateTestimonial, deleteTestimonial,
-      contactMessages, sendContactMessage, deleteContactMessage
+      contactMessages, sendContactMessage, deleteContactMessage, fetchContacts
     }}>
       {children}
     </DataContext.Provider>

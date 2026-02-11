@@ -76,11 +76,18 @@ export function AdminDashboard() {
     stats, addStat, updateStat, deleteStat,
     statsSetup, updateStatsSetup,
     // Contacts
-    contactMessages, deleteContactMessage
+    contactMessages, deleteContactMessage, fetchContacts
   } = useData();
 
   // --- STATES DE CONTROLE DE UI ---
   const [activeTab, setActiveTab] = useState<EditMode>('about');
+
+  // Refresh messages when tab opens
+  useEffect(() => {
+    if (activeTab === 'messages') {
+      fetchContacts();
+    }
+  }, [activeTab]);
 
   // Forms - About
   const [editingName, setEditingName] = useState(name);
