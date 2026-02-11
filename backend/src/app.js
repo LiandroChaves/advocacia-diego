@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
+app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
 app.use('/api', routes);
 
 app.get('/', (req, res) => {

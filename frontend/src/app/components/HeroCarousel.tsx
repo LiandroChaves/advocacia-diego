@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ChevronDown, Scale } from 'lucide-react';
 import { useData } from '../context/DataContext';
+import logoBranca from '@/assets/logobranca.png';
 
 export function HeroCarousel() {
     const { name, banners } = useData();
@@ -56,7 +57,7 @@ export function HeroCarousel() {
 
             {/* Conteúdo da Hero (Texto e Botão) - Fica por cima de tudo com z-10 */}
             <div className="relative z-10 container mx-auto text-center px-4 max-w-4xl text-white -translate-y-6 md:-translate-y-36">
-                <Scale className="h-20 w-20 mx-auto mb-6 text-white" />
+                <img src={logoBranca} alt="Logo" className="h-30 w-30 mx-auto mb-6 text-white" />
 
                 <h1 className="text-3xl md:text-4xl font-bold mb-4 drop-shadow-md">
                     {activeBanners[currentSlide]?.title || name}

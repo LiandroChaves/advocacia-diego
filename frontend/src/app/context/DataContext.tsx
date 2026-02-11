@@ -261,10 +261,14 @@ export function DataProvider({ children }: { children: ReactNode }) {
       const res = await authenticatedFetch(`${apiUrl}/about`);
       if (res.ok) {
         const data = await res.json();
+        const baseUrl = apiUrl?.replace(/\/api$/, '') || '';
+        const imgPath = data.imageUrl || data.image_url;
+        const finalImg = imgPath && imgPath.startsWith('/') ? `${baseUrl}${imgPath}` : (imgPath || diegoAbout);
+
         setAbout({
           ...defaultAbout,
           ...data,
-          imageUrl: data.imageUrl || data.image_url || diegoAbout
+          imageUrl: finalImg
         });
       }
     } catch (e) {
@@ -278,8 +282,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
       if (res.ok) {
         const data = await res.json();
 
-        // Se a API trouxe gente, a gente mapeia e atualiza
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
+          const baseUrl = apiUrl?.replace(/\/api$/, '') || '';
+
           setTeam(data.map((item: any) => {
             let fallbackImg = '';
             const lowName = item.name.toLowerCase();
@@ -287,9 +292,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
             else if (lowName.includes('jonatas')) fallbackImg = jonatasTeam;
             else if (lowName.includes('heloisa')) fallbackImg = heloisaTeam;
 
+            const imgPath = item.imageUrl || item.image_url || fallbackImg || diegoTeam;
+
             return {
               ...item,
-              imageUrl: item.imageUrl || item.image_url || fallbackImg || diegoTeam
+              imageUrl: imgPath.startsWith('/') ? `${baseUrl}${imgPath}` : imgPath
             };
           }));
         }
@@ -303,7 +310,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       const res = await authenticatedFetch(`${apiUrl}/practice-areas`);
       if (res.ok) {
         const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           setPracticeAreas(data);
         }
       }
@@ -317,7 +324,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       if (res.ok) {
         const data = await res.json();
         // Se o banco tiver perguntas cadastradas, a gente atualiza
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           setFaqs(data);
         }
       }
@@ -331,12 +338,18 @@ export function DataProvider({ children }: { children: ReactNode }) {
       const res = await authenticatedFetch(`${apiUrl}/banners`);
       if (res.ok) {
         const data = await res.json();
+        // Se o backend retornou um array (mesmo que vazio), usamos ele.
+        // Isso evita que o admin veja dados de fallback ("f1", etc) e tente editar.
+        if (Array.isArray(data)) {
+          // Ajusta URLs de imagem para incluir o domínio do backend
+          const baseUrl = apiUrl?.replace(/\/api$/, '') || '';
 
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.length > 0) {
-            setBanners(data);
-          }
+          setBanners(data.map((item: any) => ({
+            ...item,
+            imageUrl: item.imageUrl && item.imageUrl.startsWith('/')
+              ? `${baseUrl}${item.imageUrl}`
+              : item.imageUrl
+          })));
         }
       }
     } catch (e) {
@@ -349,7 +362,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       if (res.ok) {
         const data = await res.json();
         // Se a API retornar um array com conteúdo, a gente usa
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           setStats(data);
         }
       }
@@ -362,10 +375,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
       const res = await authenticatedFetch(`${apiUrl}/stats-setup`);
       if (res.ok) {
         const data = await res.json();
+        const baseUrl = apiUrl?.replace(/\/api$/, '') || '';
+        const imgPath = data.backgroundImageUrl || data.background_image_url || statsBackground;
+
         setStatsSetup({
           ...data,
-          // Se a API responder mas não vier imagem, usa o fallback local
-          backgroundImageUrl: data.backgroundImageUrl || data.background_image_url || statsBackground
+          backgroundImageUrl: imgPath.startsWith('/') ? `${baseUrl}${imgPath}` : imgPath
         });
       }
     } catch (e) {
@@ -379,7 +394,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
       if (res.ok) {
         const data = await res.json();
 
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
+          const baseUrl = apiUrl?.replace(/\/api$/, '') || '';
+
           setTestimonials(data.map((item: any) => {
             let fallbackImg = '';
             const lowName = item.name.toLowerCase();
@@ -388,9 +405,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
             else if (lowName.includes('jonatas')) fallbackImg = jonatasTestimonial;
             else if (lowName.includes('heloisa')) fallbackImg = heloisaTestimonial;
 
+            const imgPath = item.avatar || item.image_url || fallbackImg || item.name.substring(0, 2).toUpperCase();
+
             return {
               ...item,
-              avatar: item.avatar || item.image_url || fallbackImg || item.name.substring(0, 2).toUpperCase()
+              avatar: imgPath.startsWith('/') ? `${baseUrl}${imgPath}` : imgPath
             };
           }));
         }

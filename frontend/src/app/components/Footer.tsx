@@ -11,7 +11,7 @@ export function Footer() {
 
     return (
         // Tirei o 'overflow-hidden' daqui. Vamos deixar o conteúdo se ajustar naturalmente.
-        <footer className="bg-[#0f172a] text-white pt-16 pb-8 border-t border-white/10 font-sans w-full">
+        <footer className="bg-[#000000] text-white pt-16 pb-8 border-t border-white/10 font-sans w-full">
             <div className="container mx-auto px-4 max-w-6xl">
 
                 {/* GRID RESPONSIVO:
@@ -134,14 +134,17 @@ export function Footer() {
                         </h3>
                         <div className="space-y-4 w-full flex flex-col items-center md:items-start">
 
-                            <div className="flex flex-col md:flex-row items-center md:items-start gap-3 group w-full">
-                                <div className="p-2 bg-white/5 rounded-lg group-hover:bg-[#c5a059]/20 transition-colors shrink-0">
-                                    <Phone className="h-5 w-5 text-[#c5a059]" />
+                            {/* wa.me */}
+                            <a href="https://wa.me/5588992375232" target="_blank" rel="noopener noreferrer">
+                                <div className="flex flex-col md:flex-row items-center md:items-start gap-3 group w-full">
+                                    <div className="p-2 bg-white/5 rounded-lg group-hover:bg-[#c5a059]/20 transition-colors shrink-0">
+                                        <Phone className="h-5 w-5 text-[#c5a059]" />
+                                    </div>
+                                    <span className="text-white/80 group-hover:text-white transition-colors break-all md:break-normal">
+                                        (88) 9 9237-5232
+                                    </span>
                                 </div>
-                                <span className="text-white/80 group-hover:text-white transition-colors break-all md:break-normal">
-                                    (88) 9 9237-5232
-                                </span>
-                            </div>
+                            </a>
 
                             <div className="flex flex-col md:flex-row items-center md:items-start gap-3 group w-full">
                                 <div className="p-2 bg-white/5 rounded-lg group-hover:bg-[#c5a059]/20 transition-colors shrink-0">
