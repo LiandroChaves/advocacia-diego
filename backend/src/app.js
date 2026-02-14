@@ -6,7 +6,12 @@ const path = require('path');
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+    origin: ['https://advocacia-diego-tawny.vercel.app', 'https://www.advogadodiegothales.com.br', 'http://localhost:5552'],
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
 app.use('/api', routes);
