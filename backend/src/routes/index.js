@@ -14,6 +14,10 @@ const sessionRoutes = require('./session.routes');
 
 const routes = Router();
 
+routes.get('/ping', (req, res) => {
+    return res.json({ message: 'Tô acordado, mn!' });
+});
+
 routes.use('/auth', authRoutes);
 routes.use('/users', userRoutes);
 routes.use('/sessions', sessionRoutes);
