@@ -7,7 +7,7 @@ const app = express();
 
 app.use(express.json());
 const corsOptions = {
-    origin: ['https://advocacia-diego-tawny.vercel.app/api', 'https://www.advogadodiegothales.com.br', 'http://localhost:5552'],
+    origin: ['https://advocacia-diego-tawny.vercel.app', 'https://www.advogadodiegothales.com.br', 'http://localhost:5552'],
     optionsSuccessStatus: 200
 };
 
