@@ -6,7 +6,7 @@ module.exports = {
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT, // <--- ADICIONE ESSA LINHA
+    port: process.env.DB_PORT,
     dialect: 'postgres',
     logging: false,
     define: {
@@ -19,21 +19,21 @@ module.exports = {
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT, // <--- ADICIONE AQUI TAMBÉM
+    port: process.env.DB_PORT,
     dialect: 'postgres',
   },
   production: {
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT, // <--- E AQUI
+    use_env_variable: 'DATABASE_URL',
     dialect: 'postgres',
     dialectOptions: {
       ssl: {
         require: true,
         rejectUnauthorized: false
       }
-    }
+    },
+    define: {
+      timestamps: true,
+      underscored: true,
+    },
   }
 };

@@ -42,7 +42,7 @@ export function Contact() {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-12 items-start">
+                <div className="grid md:grid-cols-2 gap-12 items-center justify-center align-center">
                     {/* Lado Esquerdo: Infos + Mapa */}
                     <div className="space-y-8">
                         <div className="space-y-6">
@@ -70,63 +70,17 @@ export function Contact() {
                             </div>
                         </div>
 
-                        <div className="w-full aspect-square bg-card rounded-xl overflow-hidden border border-border shadow-sm relative group">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.7237933654123!2d-38.10245782631498!3d-5.148091752038894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7bbd106b3ce54ab%3A0x5607209385aa4e90!2sR.%20Camilo%20Brasiliense%2C%20363%20-%2002%20-%20Jo%C3%A3o%20XXIII%2C%20Limoeiro%20do%20Norte%20-%20CE%2C%2062930-000!5e0!3m2!1spt-BR!2sbr!4v1770224194392!5m2!1spt-BR!2sbr"
-                                width="100%" height="100%" style={{ border: 0 }} allowFullScreen={true} loading="lazy"
-                                className="transition-all duration-500 hover:scale-103"
-                            ></iframe>
-                        </div>
+
                     </div>
 
                     {/* Lado Direito: Formulário */}
-                    <div className="bg-card p-8 rounded-2xl shadow-lg border border-border/50">
-                        <h3 className="text-2xl font-bold text-foreground mb-6">Envie uma mensagem</h3>
 
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-foreground">Nome</label>
-                                    <input required type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full p-3 rounded-lg bg-muted border border-border focus:border-[#c5a059] outline-none" placeholder="Seu nome" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-foreground">Telefone</label>
-                                    <input type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full p-3 rounded-lg bg-muted border border-border focus:border-[#c5a059] outline-none" placeholder="(00) 00000-0000" />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium text-foreground">E-mail</label>
-                                <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full p-3 rounded-lg bg-muted border border-border focus:border-[#c5a059] outline-none" placeholder="seu@email.com" />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium text-foreground">Assunto</label>
-                                <select value={formData.subject} onChange={e => setFormData({ ...formData, subject: e.target.value })} className="w-full p-3 rounded-lg bg-muted border border-border focus:border-[#c5a059] outline-none text-muted-foreground">
-                                    <option>Direito Civil</option>
-                                    <option>Direito Trabalhista</option>
-                                    <option>Direito de Família</option>
-                                    <option>Outros</option>
-                                </select>
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium text-foreground">Mensagem</label>
-                                <textarea required rows={4} value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} className="w-full p-3 rounded-lg bg-muted border border-border focus:border-[#c5a059] outline-none resize-none" placeholder="Descreva seu caso..." />
-                            </div>
-
-                            {error && <p className="text-red-500 text-sm">{error}</p>}
-
-                            {success ? (
-                                <div className="w-full py-4 bg-green-500/10 text-green-600 font-bold rounded-lg flex items-center justify-center gap-2 border border-green-500/20">
-                                    <CheckCircle2 className="h-5 w-5" /> Mensagem Enviada!
-                                </div>
-                            ) : (
-                                <button type="submit" disabled={loading} className="w-full py-4 bg-primary text-muted font-bold rounded-lg hover:bg-foreground/90 transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70">
-                                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <>Enviar Mensagem <Send className="h-4 w-4" /></>}
-                                </button>
-                            )}
-                        </form>
+                    <div className="w-full aspect-square bg-card rounded-xl overflow-hidden border border-border shadow-sm relative group">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.7237933654123!2d-38.10245782631498!3d-5.148091752038894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7bbd106b3ce54ab%3A0x5607209385aa4e90!2sR.%20Camilo%20Brasiliense%2C%20363%20-%2002%20-%20Jo%C3%A3o%20XXIII%2C%20Limoeiro%20do%20Norte%20-%20CE%2C%2062930-000!5e0!3m2!1spt-BR!2sbr!4v1770224194392!5m2!1spt-BR!2sbr"
+                            width="100%" height="100%" style={{ border: 0 }} allowFullScreen={true} loading="lazy"
+                            className="transition-all duration-500 hover:scale-103"
+                        ></iframe>
                     </div>
                 </div>
             </div>

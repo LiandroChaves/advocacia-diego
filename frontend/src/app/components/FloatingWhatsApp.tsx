@@ -62,7 +62,7 @@ export function FloatingWhatsApp() {
             </button>
 
             {/* Modal / Chat Box */}
-            <div className={`fixed bottom-6 left-6 z-50 w-[90%] max-w-sm bg-card border border-border rounded-xl shadow-2xl transition-all duration-300 origin-bottom-left ${isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'
+            <div className={`fixed bottom-6 right-6 z-50 w-[90%] max-w-sm bg-card border border-border rounded-xl shadow-2xl transition-all duration-300 origin-bottom-left ${isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'
                 }`}>
                 {/* Header */}
                 <div className="bg-[#075e54] text-white p-4 rounded-t-xl flex justify-between items-center">
