@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '@/app/context/AuthContext';
-import { Scale, AlertCircle } from 'lucide-react';
+// Importamos os ícones de olho aqui
+import { Scale, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // State para controlar se a senha aparece ou não
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -56,15 +60,31 @@ export function Login() {
               <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
                 Senha
               </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 bg-input-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                placeholder="••••••••"
-                required
-              />
+              {/* Container relativo para posicionar o ícone dentro do input */}
+              <div className="relative">
+                <input
+                  id="password"
+                  // O type muda dinamicamente aqui
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-2 bg-input-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground pr-10"
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  tabIndex={-1} // Evita que o tab pare no ícone antes de ir pro botão de entrar
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
             </div>
 
             {error && (
