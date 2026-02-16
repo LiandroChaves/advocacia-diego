@@ -11,7 +11,6 @@ export function HeroCarousel() {
 
     useEffect(() => {
         if (activeBanners.length <= 1) return;
-
         const timer = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % activeBanners.length);
         }, 5000);
@@ -19,13 +18,14 @@ export function HeroCarousel() {
     }, [activeBanners.length]);
 
     const scrollToAbout = () => {
-        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+        // Ajustei para 'aboutme' que é o ID que vi no seu componente AboutMe
+        document.getElementById('aboutme')?.scrollIntoView({ behavior: 'smooth' });
     };
 
     if (activeBanners.length === 0) return null;
 
     return (
-        <section className="relative h-[400px] md:h-[750px] w-full overflow-hidden flex items-center justify-center">
+        <section className="relative h-[500px] md:h-[750px] w-full overflow-hidden flex items-center justify-center">
             {/* Background Slides */}
             {activeBanners.map((banner, index) => (
                 <div
@@ -33,47 +33,54 @@ export function HeroCarousel() {
                     className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'
                         }`}
                 >
-                    {/* Imagem de fundo */}
                     <img
                         src={
-                            // 1. Se for uma URL completa (http) ou Base64 (data:), usa direto
                             banner.imageUrl.startsWith('http') || banner.imageUrl.startsWith('data:')
                                 ? banner.imageUrl
-                                : // 2. Se a string começar com "/" ou "src", é o fallback do Vite/React
-                                // (Imports de imagem no Vite geralmente viram algo como "/src/assets/...")
-                                banner.imageUrl.startsWith('/') || banner.imageUrl.includes('src/assets')
+                                : banner.imageUrl.startsWith('/') || banner.imageUrl.includes('src/assets')
                                     ? banner.imageUrl
-                                    : // 3. Se não for nenhum dos acima, aí sim tenta buscar na API
-                                    `${import.meta.env.VITE_API_URL}${banner.imageUrl}`
+                                    : `${import.meta.env.VITE_API_URL}${banner.imageUrl}`
                         }
                         alt={banner.title || `Slide ${index + 1}`}
                         className="absolute inset-0 w-full h-full object-cover"
                     />
-
-                    {/* Overlay escuro (Gradiente) pra garantir leitura do texto */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/60" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/70" />
                 </div>
             ))}
 
-            {/* Conteúdo da Hero (Texto e Botão) - Fica por cima de tudo com z-10 */}
-            <div className="relative z-10 container mx-auto text-center px-4 max-w-4xl text-white -translate-y-6 md:-translate-y-36">
-                <img src={logoBranca} alt="Logo" className="h-30 w-30 mx-auto mb-6 text-white" />
+            {/* Conteúdo Centralizado e deslocado para a direita no Desktop */}
+            <div className="relative z-10 container mx-auto px-4 max-w-7xl text-white flex flex-col md:flex-row items-center justify-center gap-8 md:gap-24">
 
-                <h1 className="text-3xl md:text-4xl font-bold mb-4 drop-shadow-md">
-                    {activeBanners[currentSlide]?.title || name}
-                </h1>
+                {/* Logo - Mantida no tamanho de impacto */}
+                <div className="flex-shrink-0">
+                    <img
+                        src={logoBranca}
+                        alt="Logo"
+                        className="h-40 w-40 md:h-72 md:w-72 object-contain drop-shadow-2xl"
+                    />
+                </div>
 
-                <p className="text-md md:text-lg opacity-90 mb-8 drop-shadow-sm">
-                    {activeBanners[currentSlide]?.description || 'Defendendo seus direitos com ética e comprometimento'}
-                </p>
+                {/* Bloco de Texto - Delimitado pela largura da descrição */}
+                <div className="flex flex-col items-center md:items-start text-center md:text-left flex-1 
+        max-w-md">
 
-                <button
-                    onClick={scrollToAbout}
-                    className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-lg hover:bg-white/90 transition-colors font-medium text-lg shadow-lg dark:bg-white dark:text-black"
-                >
-                    Conheça nosso trabalho
-                    <ChevronDown className="h-5 w-5" />
-                </button>
+                    {/* Título um pouco menor (4xl) para caber melhor no bloco */}
+                    <h1 className="text-3xl md:text-4xl font-bold mb-4 drop-shadow-md leading-tight">
+                        {activeBanners[currentSlide]?.title || name}
+                    </h1>
+
+                    <p className="text-base md:text-lg opacity-90 mb-8 drop-shadow-sm leading-relaxed">
+                        {activeBanners[currentSlide]?.description || 'Defendendo seus direitos com ética e comprometimento'}
+                    </p>
+
+                    <button
+                        onClick={scrollToAbout}
+                        className="inline-flex items-center gap-2 bg-white text-primary px-10 py-4 rounded-lg hover:bg-white/90 transition-all transform hover:scale-105 font-bold text-lg shadow-xl dark:bg-white dark:text-black w-fit"
+                    >
+                        Conheça nosso trabalho
+                        <ChevronDown className="h-5 w-5" />
+                    </button>
+                </div>
             </div>
         </section>
     );

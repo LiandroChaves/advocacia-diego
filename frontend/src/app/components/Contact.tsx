@@ -50,7 +50,7 @@ export function Contact() {
                                 <div className="p-3 bg-primary/10 rounded-lg text-[#c5a059]"><MapPin className="h-6 w-6" /></div>
                                 <div>
                                     <h3 className="font-bold text-foreground text-lg">Endereço</h3>
-                                    <p className="text-muted-foreground leading-relaxed">R. Camilo Brasiliense, 363<br />Sala 02 - Centro<br />Limoeiro do Norte - CE, 62930-000</p>
+                                    <p className="text-muted-foreground leading-relaxed">R. Camilo Brasiliense, 363<br />Sala 02 - Centro<br />Limoeiro do Norte - CE, 62930-031</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">
@@ -58,7 +58,7 @@ export function Contact() {
                                 <div>
                                     <h3 className="font-bold text-foreground text-lg">Telefone</h3>
                                     <p className="text-muted-foreground">(88) 9 9237-5232</p>
-                                    <p className="text-muted-foreground text-sm opacity-80">Segunda a Sexta, das 8h às 18h</p>
+                                    <p className="text-muted-foreground text-sm opacity-80">Segunda a Sexta, das 9h às 18h</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">

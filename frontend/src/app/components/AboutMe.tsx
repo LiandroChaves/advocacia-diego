@@ -1,58 +1,67 @@
-import React from 'react';
-// import diegoThales from '@/assets/diego-thales.png';
+import React, { useState } from 'react';
 import diegoThales from '@/assets/diego-copia.png';
 import fundoDG from '@/assets/fundoDG.png';
-
 import { useData } from '@/app/context/DataContext';
 
 export function AboutMe() {
     const { about } = useData();
-    return (
-        <section className="relative md:py-12 py-16 overflow-hidden" id='aboutme'>
+    const [isExpanded, setIsExpanded] = useState(false);
 
-            {/* --- CAMADA DE FUNDO (Isolada) --- */}
-            {/* Agora o grayscale e as misturas afetam SÓ essa div, não o texto */}
+    const characterLimit = 505;
+    const description = about.description || 'Sua trajetória é pautada pela constante atualização jurídica...';
+    const isLongText = description.length > characterLimit;
+
+    const displayText = isExpanded ? description : `${description.substring(0, characterLimit)}...`;
+
+    // Função para alternar o texto e scrolar pro topo
+    const handleToggle = () => {
+        if (isExpanded) {
+            document.getElementById('aboutme')?.scrollIntoView({ behavior: 'smooth' });
+        }
+        setIsExpanded(!isExpanded);
+    };
+
+    return (
+        <section className="relative md:py-12 py-16 overflow-hidden min-h-fit" id='aboutme'>
+
+            {/* --- CAMADA DE FUNDO --- */}
             <div
-                className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-300
-                /* Mágica do CSS: */
-                grayscale /* Tira a cor amarela da foto original */
-                bg-background/20 /* Light Mode: Fundo branco 95% opaco (Clean) */
-                bg-blend-overlay /* Mistura suave no branco */
-                
-                /* Dark Mode: */
-                dark:bg-background/90 /* Fundo Navy 90% opaco (Escuro) */
-                dark:bg-blend-multiply /* Multiplica o Navy com a foto (Fica escuro e sutil) */
-                "
+                className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-300 grayscale bg-background/20 bg-blend-overlay dark:bg-background/90 dark:bg-blend-multiply"
                 style={{ backgroundImage: `url(${fundoDG})` }}
             />
 
-            {/* --- CONTEÚDO (Fica por cima com z-10) --- */}
-            <div className="relative z-10 container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center md:items-end">
+            {/* --- CONTEÚDO --- */}
+            <div className="relative z-10 container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center h-full">
 
-                <div className="order-2 md:order-1 text-center md:text-left mb-8 md:mb-0 self-center">
-                    <h2 className="text-3xl md:text-5xl font-bold text-primary mb-4 md:mb-6">
+                {/* Bloco de Texto - Ajustado para centralizar no mobile */}
+                <div className="order-2 md:order-1 mb-8 flex flex-col items-center md:items-start max-w-md mx-auto md:mx-0">
+                    <h2 className="text-3xl md:text-5xl font-bold text-primary mb-4 md:mb-6 text-center md:text-left">
                         {about.title || 'Diêgo Thales'}
                     </h2>
 
-                    <p className="text-base md:text-lg leading-relaxed text-foreground/80 text-justify md:text-left">
-                        {about.description || 'Com 8 anos de experiência na advocacia, este profissional consolidou uma carreira marcada por comprometimento, ética e resultados expressivos. Atuando em diversas áreas do Direito, desenvolveu habilidades estratégicas para análise de casos complexos, negociação e defesa dos interesses de seus clientes. Sua trajetória é pautada pela constante atualização jurídica, garantindo soluções eficazes e seguras.'}
-                    </p>
+                    <div className="relative w-full">
+                        <p className="text-base md:text-lg leading-relaxed text-foreground/80 text-justify transition-all duration-500">
+                            {displayText}
+                        </p>
+
+                        {isLongText && (
+                            <button
+                                onClick={handleToggle}
+                                className="mt-4 text-primary font-bold hover:underline block mx-auto md:mx-0"
+                            >
+                                {isExpanded ? 'Ler menos ▲' : 'Ler mais ▼'}
+                            </button>
+                        )}
+                    </div>
                 </div>
 
-                <div className="order-1 md:order-2 flex justify-center md:justify-end relative">
-                    {about.imageUrl ? (
-                        <img
-                            src={about.imageUrl.startsWith('http') ? about.imageUrl : `${import.meta.env.VITE_API_URL}${about.imageUrl}`}
-                            alt={about.title}
-                            className="w-auto h-auto max-h-[350px] md:max-h-[500px] object-contain drop-shadow-lg"
-                        />
-                    ) : (
-                        <img
-                            src={diegoThales}
-                            alt="Diêgo Thales"
-                            className="w-auto h-auto max-h-[350px] md:max-h-[500px] object-contain drop-shadow-lg"
-                        />
-                    )}
+                {/* Bloco da Imagem */}
+                <div className="order-1 md:order-2 flex justify-center items-center relative self-center">
+                    <img
+                        src={about.imageUrl ? (about.imageUrl.startsWith('http') ? about.imageUrl : `${import.meta.env.VITE_API_URL}${about.imageUrl}`) : diegoThales}
+                        alt={about.title || "Diêgo Thales"}
+                        className="w-auto h-auto max-h-[350px] md:max-h-[550px] object-contain drop-shadow-lg"
+                    />
                 </div>
 
             </div>

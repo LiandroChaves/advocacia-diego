@@ -121,7 +121,7 @@ export function Footer() {
                                     R. Camilo Brasiliense, 363<br />
                                     Sala 02 - Centro<br />
                                     Limoeiro do Norte - CE<br />
-                                    CEP: 62930-000
+                                    CEP: 62930-031
                                 </p>
                             </div>
                         </div>
