@@ -32,6 +32,7 @@ import {
   Landmark,
   Scale
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const availableIcons = [
   { name: 'Scale', Icon: Scale },
@@ -58,43 +59,30 @@ export function AdminDashboard() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  // Extraindo TUDO do contexto
   const {
-    // About
     name, updateName, about, updateAbout,
-    // Team
     team, addTeamMember, updateTeamMember, deleteTeamMember,
-    // Areas
     practiceAreas, addPracticeArea, updatePracticeArea, deletePracticeArea,
-    // FAQ
     faqs, addFAQ, updateFAQ, deleteFAQ,
-    // Banners
     banners, addBanner, updateBanner, deleteBanner,
-    // Testimonials
     testimonials, addTestimonial, updateTestimonial, deleteTestimonial,
-    // Stats
     stats, addStat, updateStat, deleteStat,
     statsSetup, updateStatsSetup,
-    // Contacts
     contactMessages, deleteContactMessage, fetchContacts
   } = useData();
 
-  // --- STATES DE CONTROLE DE UI ---
   const [activeTab, setActiveTab] = useState<EditMode>('about');
 
-  // Refresh messages when tab opens
   useEffect(() => {
     if (activeTab === 'messages') {
       fetchContacts();
     }
   }, [activeTab]);
 
-  // Forms - About
   const [editingName, setEditingName] = useState(name);
   const [editingAbout, setEditingAbout] = useState(about);
   const [valuesInput, setValuesInput] = useState('');
 
-  // Forms - Modais
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [editingTeam, setEditingTeam] = useState<Partial<TeamMember>>({});
 
@@ -113,102 +101,147 @@ export function AdminDashboard() {
   const [showStatModal, setShowStatModal] = useState(false);
   const [editingStat, setEditingStat] = useState<Partial<Stat>>({});
 
-  // Auth Check
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
     }
   }, [isAuthenticated, navigate]);
 
-  // Sync Name
   useEffect(() => {
     setEditingName(name);
   }, [name]);
 
-  // Sync About Data
   useEffect(() => {
     setEditingAbout(about);
     setValuesInput(Array.isArray(about.values) ? about.values.join(', ') : (typeof about.values === 'string' ? about.values : ''));
   }, [about]);
 
-  // --- HANDLERS (Funções de Salvar) ---
+  const handleConfirmDelete = (callback: () => void, item: string) => {
+    toast(`Tem certeza que deseja excluir ${item}?`, {
+      action: {
+        label: 'Excluir',
+        onClick: () => {
+          callback();
+          toast.success('Item removido com sucesso!');
+        },
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => toast.dismiss(),
+      },
+    });
+  };
 
   const handleSaveAbout = async () => {
     try {
       updateName(editingName);
-      // Sincroniza o input de valores com o objeto que será enviado
       const updatedValues = valuesInput.split(',').map(v => v.trim()).filter(v => v !== '');
       await updateAbout({ ...editingAbout, values: updatedValues });
-      alert('Informações salvas com sucesso!');
+      toast.success('Informações do escritório salvas!');
     } catch (error) {
-      console.error(error);
-      alert('Erro ao salvar as informações.');
+      toast.error('Erro ao salvar informações.');
     }
   };
 
-  const handleSaveTeam = () => {
-    if (editingTeam.id) {
-      updateTeamMember(editingTeam.id, editingTeam);
-    } else {
-      addTeamMember(editingTeam as Omit<TeamMember, 'id'>);
+  const handleSaveTeam = async () => {
+    try {
+      if (editingTeam.id) {
+        await updateTeamMember(editingTeam.id, editingTeam);
+        toast.success('Membro atualizado!');
+      } else {
+        await addTeamMember(editingTeam as Omit<TeamMember, 'id'>);
+        toast.success('Novo membro adicionado!');
+      }
+      setShowTeamModal(false);
+      setEditingTeam({});
+    } catch (error) {
+      toast.error('Erro ao salvar membro da equipe.');
     }
-    setShowTeamModal(false);
-    setEditingTeam({});
   };
 
-  const handleSaveArea = () => {
-    if (editingArea.id) {
-      updatePracticeArea(editingArea.id, editingArea);
-    } else {
-      addPracticeArea(editingArea as Omit<PracticeArea, 'id'>);
+  const handleSaveArea = async () => {
+    try {
+      if (editingArea.id) {
+        await updatePracticeArea(editingArea.id, editingArea);
+        toast.success('Área de atuação atualizada!');
+      } else {
+        await addPracticeArea(editingArea as Omit<PracticeArea, 'id'>);
+        toast.success('Nova área adicionada!');
+      }
+      setShowAreaModal(false);
+      setEditingArea({});
+    } catch (error) {
+      toast.error('Erro ao salvar área.');
     }
-    setShowAreaModal(false);
-    setEditingArea({});
   };
 
-  const handleSaveFaq = () => {
-    if (editingFaq.id) {
-      updateFAQ(editingFaq.id, editingFaq);
-    } else {
-      addFAQ(editingFaq as Omit<FAQ, 'id'>);
+  const handleSaveFaq = async () => {
+    try {
+      if (editingFaq.id) {
+        await updateFAQ(editingFaq.id, editingFaq);
+        toast.success('FAQ atualizado!');
+      } else {
+        await addFAQ(editingFaq as Omit<FAQ, 'id'>);
+        toast.success('Nova pergunta adicionada!');
+      }
+      setShowFaqModal(false);
+      setEditingFaq({});
+    } catch (error) {
+      toast.error('Erro ao salvar FAQ.');
     }
-    setShowFaqModal(false);
-    setEditingFaq({});
   };
 
-  const handleSaveBanner = () => {
-    if (editingBanner.id) {
-      updateBanner(editingBanner.id, editingBanner);
-    } else {
-      addBanner({
-        imageUrl: editingBanner.imageUrl || '',
-        title: editingBanner.title || '',
-        description: editingBanner.description || '',
-        active: editingBanner.active ?? true
-      });
+  const handleSaveBanner = async () => {
+    try {
+      if (editingBanner.id) {
+        await updateBanner(editingBanner.id, editingBanner);
+        toast.success('Banner atualizado!');
+      } else {
+        await addBanner({
+          imageUrl: editingBanner.imageUrl || '',
+          title: editingBanner.title || '',
+          description: editingBanner.description || '',
+          active: editingBanner.active ?? true
+        });
+        toast.success('Novo banner adicionado!');
+      }
+      setShowBannerModal(false);
+      setEditingBanner({});
+    } catch (error) {
+      toast.error('Erro ao salvar banner.');
     }
-    setShowBannerModal(false);
-    setEditingBanner({});
   };
 
-  const handleSaveTestimonial = () => {
-    if (editingTestimonial.id) {
-      updateTestimonial(editingTestimonial.id, editingTestimonial);
-    } else {
-      addTestimonial(editingTestimonial as any);
+  const handleSaveTestimonial = async () => {
+    try {
+      if (editingTestimonial.id) {
+        await updateTestimonial(editingTestimonial.id, editingTestimonial);
+        toast.success('Depoimento atualizado!');
+      } else {
+        await addTestimonial(editingTestimonial as any);
+        toast.success('Novo depoimento adicionado!');
+      }
+      setShowTestimonialModal(false);
+      setEditingTestimonial({});
+    } catch (error) {
+      toast.error('Erro ao salvar depoimento.');
     }
-    setShowTestimonialModal(false);
-    setEditingTestimonial({});
   };
 
-  const handleSaveStat = () => {
-    if (editingStat.id) {
-      updateStat(editingStat.id, editingStat);
-    } else {
-      addStat(editingStat as Omit<Stat, 'id'>);
+  const handleSaveStat = async () => {
+    try {
+      if (editingStat.id) {
+        await updateStat(editingStat.id, editingStat);
+        toast.success('Estatística atualizada!');
+      } else {
+        await addStat(editingStat as Omit<Stat, 'id'>);
+        toast.success('Nova estatística adicionada!');
+      }
+      setShowStatModal(false);
+      setEditingStat({});
+    } catch (error) {
+      toast.error('Erro ao salvar estatística.');
     }
-    setShowStatModal(false);
-    setEditingStat({});
   };
 
   if (!isAuthenticated) return null;
@@ -218,7 +251,6 @@ export function AdminDashboard() {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-foreground mb-8">Painel Administrativo</h1>
 
-        {/* --- NAVEGAÇÃO ENTRE ABAS --- */}
         <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
           {[
             { id: 'about', label: 'Sobre', icon: FileText },
@@ -244,9 +276,6 @@ export function AdminDashboard() {
           ))}
         </div>
 
-        {/* ================= CONTEÚDO DAS ABAS ================= */}
-
-        {/* 1. ABOUT TAB */}
         {activeTab === 'about' && (
           <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
             <h2 className="text-2xl font-bold text-foreground mb-6">Informações do Escritório</h2>
@@ -309,7 +338,6 @@ export function AdminDashboard() {
           </div>
         )}
 
-        {/* 2. TEAM TAB */}
         {activeTab === 'team' && (
           <div className="space-y-4">
             <button onClick={() => { setEditingTeam({}); setShowTeamModal(true); }} className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
@@ -334,7 +362,7 @@ export function AdminDashboard() {
                   </div>
                   <div className="flex gap-2 ml-4">
                     <button onClick={() => { setEditingTeam(member); setShowTeamModal(true); }} className="p-2 text-primary hover:bg-muted rounded-lg transition-colors"><Edit2 className="h-4 w-4" /></button>
-                    <button onClick={() => { if (confirm('Excluir?')) deleteTeamMember(member.id); }} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"><Trash2 className="h-4 w-4" /></button>
+                    <button onClick={() => handleConfirmDelete(() => deleteTeamMember(member.id), member.name)} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"><Trash2 className="h-4 w-4" /></button>
                   </div>
                 </div>
               ))}
@@ -342,7 +370,6 @@ export function AdminDashboard() {
           </div>
         )}
 
-        {/* 3. AREAS TAB */}
         {activeTab === 'areas' && (
           <div className="space-y-4">
             <button onClick={() => { setEditingArea({}); setShowAreaModal(true); }} className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
@@ -357,7 +384,7 @@ export function AdminDashboard() {
                   </div>
                   <div className="flex gap-2 ml-4">
                     <button onClick={() => { setEditingArea(area); setShowAreaModal(true); }} className="p-2 text-primary hover:bg-muted rounded-lg transition-colors"><Edit2 className="h-4 w-4" /></button>
-                    <button onClick={() => { if (confirm('Excluir?')) deletePracticeArea(area.id); }} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"><Trash2 className="h-4 w-4" /></button>
+                    <button onClick={() => handleConfirmDelete(() => deletePracticeArea(area.id), area.title)} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"><Trash2 className="h-4 w-4" /></button>
                   </div>
                 </div>
               ))}
@@ -365,7 +392,6 @@ export function AdminDashboard() {
           </div>
         )}
 
-        {/* 4. FAQ TAB */}
         {activeTab === 'faq' && (
           <div className="space-y-4">
             <button onClick={() => { setEditingFaq({}); setShowFaqModal(true); }} className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
@@ -380,7 +406,7 @@ export function AdminDashboard() {
                   </div>
                   <div className="flex gap-2 ml-4">
                     <button onClick={() => { setEditingFaq(faq); setShowFaqModal(true); }} className="p-2 text-primary hover:bg-muted rounded-lg transition-colors"><Edit2 className="h-4 w-4" /></button>
-                    <button onClick={() => { if (confirm('Excluir?')) deleteFAQ(faq.id); }} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"><Trash2 className="h-4 w-4" /></button>
+                    <button onClick={() => handleConfirmDelete(() => deleteFAQ(faq.id), 'esta pergunta')} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"><Trash2 className="h-4 w-4" /></button>
                   </div>
                 </div>
               ))}
@@ -388,7 +414,6 @@ export function AdminDashboard() {
           </div>
         )}
 
-        {/* 5. BANNERS TAB */}
         {activeTab === 'banners' && (
           <div className="space-y-4">
             <button onClick={() => { setEditingBanner({ active: true }); setShowBannerModal(true); }} className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
@@ -413,7 +438,7 @@ export function AdminDashboard() {
                     <div className="flex gap-2">
                       <button onClick={() => updateBanner(banner.id, { active: !banner.active })} className="p-2 hover:bg-muted rounded-lg transition-colors"><Check className={`h-4 w-4 ${banner.active ? 'text-green-500' : 'text-muted-foreground opacity-30'}`} /></button>
                       <button onClick={() => { setEditingBanner(banner); setShowBannerModal(true); }} className="p-2 text-primary hover:bg-muted rounded-lg transition-colors"><Edit2 className="h-4 w-4" /></button>
-                      <button onClick={() => { if (confirm('Excluir?')) deleteBanner(banner.id); }} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"><Trash2 className="h-4 w-4" /></button>
+                      <button onClick={() => handleConfirmDelete(() => deleteBanner(banner.id), banner.title || 'este banner')} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"><Trash2 className="h-4 w-4" /></button>
                     </div>
                   </div>
                 </div>
@@ -422,7 +447,6 @@ export function AdminDashboard() {
           </div>
         )}
 
-        {/* 6. TESTIMONIALS TAB (Novo) */}
         {activeTab === 'testimonials' && (
           <div className="space-y-4">
             <button onClick={() => { setEditingTestimonial({}); setShowTestimonialModal(true); }} className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
@@ -447,7 +471,7 @@ export function AdminDashboard() {
                   </div>
                   <div className="flex justify-end gap-2 mt-4 border-t border-border/50 pt-2">
                     <button onClick={() => { setEditingTestimonial(t); setShowTestimonialModal(true); }} className="p-2 text-primary hover:bg-muted rounded-lg transition-colors"><Edit2 className="h-4 w-4" /></button>
-                    <button onClick={() => { if (confirm('Excluir?')) deleteTestimonial(t.id); }} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"><Trash2 className="h-4 w-4" /></button>
+                    <button onClick={() => handleConfirmDelete(() => deleteTestimonial(t.id), `o depoimento de ${t.name}`)} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"><Trash2 className="h-4 w-4" /></button>
                   </div>
                 </div>
               ))}
@@ -455,14 +479,10 @@ export function AdminDashboard() {
           </div>
         )}
 
-        {/* 7. STATS TAB (Novo) */}
         {activeTab === 'stats' && (
           <div className="space-y-8">
-            {/* Configuração do Fundo */}
             <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
               <h3 className="font-bold text-lg mb-4 text-foreground">Imagem de Fundo da Seção</h3>
-
-              {/* Preview da Imagem Atual ou Selecionada */}
               <div className="mb-4 h-48 w-full bg-muted rounded-lg overflow-hidden relative border border-dashed border-border flex items-center justify-center">
                 {statsSetup.backgroundImageUrl ? (
                   <img
@@ -474,23 +494,19 @@ export function AdminDashboard() {
                   <span className="text-muted-foreground text-sm">Nenhuma imagem de fundo</span>
                 )}
               </div>
-
-              {/* Input de Upload */}
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => {
                   if (e.target.files && e.target.files[0]) {
                     updateStatsSetup({ imageFile: e.target.files[0] });
+                    toast.success('Imagem de fundo alterada!');
                   }
                 }}
                 className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
               />
-
-              <p className="text-xs text-muted-foreground mt-2">Dica: A imagem será exibida com um filtro escuro automaticamente.</p>
             </div>
 
-            {/* Lista de Números */}
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-bold text-lg text-foreground">Números Exibidos</h3>
@@ -505,7 +521,7 @@ export function AdminDashboard() {
                     <p className="text-muted-foreground">{s.label}</p>
                     <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button onClick={() => { setEditingStat(s); setShowStatModal(true); }} className="p-2 hover:bg-muted rounded-lg text-primary"><Edit2 className="h-4 w-4" /></button>
-                      <button onClick={() => { if (confirm('Excluir?')) deleteStat(s.id); }} className="p-2 hover:bg-destructive/10 rounded-lg text-destructive"><Trash2 className="h-4 w-4" /></button>
+                      <button onClick={() => handleConfirmDelete(() => deleteStat(s.id), `estatística ${s.label}`)} className="p-2 hover:bg-destructive/10 rounded-lg text-destructive"><Trash2 className="h-4 w-4" /></button>
                     </div>
                   </div>
                 ))}
@@ -514,7 +530,6 @@ export function AdminDashboard() {
           </div>
         )}
 
-        {/* 8. MESSAGES TAB (Novo Inbox) */}
         {activeTab === 'messages' && (
           <div className="space-y-4">
             <h2 className="text-2xl font-bold text-foreground mb-6">Caixa de Entrada</h2>
@@ -532,16 +547,14 @@ export function AdminDashboard() {
                         <h3 className="font-bold text-lg text-foreground">{msg.name}</h3>
                         <p className="text-sm font-medium text-primary bg-primary/10 px-2 py-0.5 rounded inline-block mt-1">{msg.subject}</p>
                       </div>
-                      <button onClick={() => { if (confirm('Excluir mensagem?')) deleteContactMessage(msg.id); }} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors">
+                      <button onClick={() => handleConfirmDelete(() => deleteContactMessage(msg.id), 'esta mensagem')} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors">
                         <Trash2 className="h-5 w-5" />
                       </button>
                     </div>
-
                     <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4 border-b border-border/50 pb-4">
                       <span className="flex items-center gap-1"><Mail className="h-3 w-3" /> {msg.email}</span>
                       {msg.phone && <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {msg.phone}</span>}
                     </div>
-
                     <div className="bg-muted/30 p-4 rounded-lg text-foreground whitespace-pre-wrap border border-border/50 text-sm leading-relaxed">
                       {msg.message}
                     </div>
@@ -551,12 +564,8 @@ export function AdminDashboard() {
             )}
           </div>
         )}
-
       </div>
 
-      {/* ================= MODAIS ================= */}
-
-      {/* Team Modal */}
       {showTeamModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
           <div className="bg-card border border-border rounded-lg max-w-lg w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
@@ -609,7 +618,6 @@ export function AdminDashboard() {
         </div>
       )}
 
-      {/* Area Modal */}
       {showAreaModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
           <div className="bg-card border border-border rounded-lg max-w-lg w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
@@ -644,9 +652,6 @@ export function AdminDashboard() {
                     </button>
                   ))}
                 </div>
-                {editingArea.icon && (
-                  <p className="text-xs text-primary mt-2 font-medium">Ícone selecionado: {editingArea.icon}</p>
-                )}
               </div>
               <button onClick={handleSaveArea} className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium">Salvar</button>
             </div>
@@ -654,7 +659,6 @@ export function AdminDashboard() {
         </div>
       )}
 
-      {/* FAQ Modal */}
       {showFaqModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
           <div className="bg-card border border-border rounded-lg max-w-lg w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
@@ -677,7 +681,6 @@ export function AdminDashboard() {
         </div>
       )}
 
-      {/* Banner Modal */}
       {showBannerModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
           <div className="bg-card border border-border rounded-lg max-w-lg w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
@@ -695,8 +698,7 @@ export function AdminDashboard() {
                 <textarea value={editingBanner.description || ''} onChange={(e) => setEditingBanner({ ...editingBanner, description: e.target.value })} className="w-full px-4 py-2 bg-input-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground resize-none" rows={2} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">URL da Imagem</label>
-                {/* Preview da Imagem Atual ou Selecionada */}
+                <label className="block text-sm font-medium text-foreground mb-1">Foto do Banner</label>
                 <div className="mb-2 h-32 w-full bg-muted rounded-lg overflow-hidden relative border border-dashed border-border flex items-center justify-center">
                   {editingBanner.imageUrl && !editingBanner.imageFile ? (
                     <img src={`${import.meta.env.VITE_API_URL}${editingBanner.imageUrl}`} className="w-full h-full object-cover" />
@@ -721,21 +723,12 @@ export function AdminDashboard() {
                 <input type="checkbox" id="banner-active" checked={editingBanner.active ?? true} onChange={(e) => setEditingBanner({ ...editingBanner, active: e.target.checked })} className="h-5 w-5 rounded border-border text-primary focus:ring-primary accent-primary" />
                 <label htmlFor="banner-active" className="text-sm font-medium text-foreground cursor-pointer">Visível no site</label>
               </div>
-              <button onClick={() => {
-                if (editingBanner.id) {
-                  updateBanner(editingBanner.id, editingBanner);
-                } else {
-                  addBanner(editingBanner as any);
-                }
-                setShowBannerModal(false);
-                setEditingBanner({});
-              }} className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium">Salvar</button>
+              <button onClick={handleSaveBanner} className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium">Salvar</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Testimonial Modal (Novo) */}
       {showTestimonialModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
           <div className="bg-card border border-border rounded-lg max-w-lg w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
@@ -749,7 +742,7 @@ export function AdminDashboard() {
                 <input type="text" value={editingTestimonial.name || ''} onChange={(e) => setEditingTestimonial({ ...editingTestimonial, name: e.target.value })} className="w-full px-4 py-2 bg-input-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Cargo / Caso (ex: Empresário)</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Cargo / Caso</label>
                 <input type="text" value={editingTestimonial.role || ''} onChange={(e) => setEditingTestimonial({ ...editingTestimonial, role: e.target.value })} className="w-full px-4 py-2 bg-input-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground" />
               </div>
               <div>
@@ -758,7 +751,6 @@ export function AdminDashboard() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">Foto / Avatar</label>
-                {/* Preview da Imagem Atual ou Selecionada */}
                 <div className="mb-2 h-24 w-24 bg-muted rounded-full overflow-hidden relative border border-dashed border-border flex items-center justify-center mx-auto">
                   {editingTestimonial.avatar && !editingTestimonial.imageFile ? (
                     <img src={editingTestimonial.avatar.startsWith('http') ? editingTestimonial.avatar : `${import.meta.env.VITE_API_URL}${editingTestimonial.avatar}`} className="w-full h-full object-cover" />
@@ -779,13 +771,12 @@ export function AdminDashboard() {
                   className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                 />
               </div>
-              <button onClick={handleSaveTestimonial} className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium">Salvar Depoimento</button>
+              <button onClick={handleSaveTestimonial} className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium">Salvar</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Stat Modal (Novo) */}
       {showStatModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
           <div className="bg-card border border-border rounded-lg max-w-sm w-full p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
@@ -795,11 +786,11 @@ export function AdminDashboard() {
             </div>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Valor (ex: +300)</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Valor</label>
                 <input type="text" value={editingStat.value || ''} onChange={(e) => setEditingStat({ ...editingStat, value: e.target.value })} className="w-full px-4 py-2 bg-input-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Rótulo (ex: Clientes)</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Rótulo</label>
                 <input type="text" value={editingStat.label || ''} onChange={(e) => setEditingStat({ ...editingStat, label: e.target.value })} className="w-full px-4 py-2 bg-input-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground" />
               </div>
               <button onClick={handleSaveStat} className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium">Salvar</button>
@@ -807,7 +798,6 @@ export function AdminDashboard() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
