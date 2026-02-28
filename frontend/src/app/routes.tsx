@@ -35,7 +35,8 @@ export const router = createBrowserRouter([
       { path: 'areas', Component: PracticeAreasPage },
       { path: 'sobre', Component: MVVPage },
       { path: 'equipe', Component: TeamPage },
-      { path: 'faq', Component: FAQPage }
+      { path: 'faq', Component: FAQPage },
+      { path: '*', element: <Navigate to="/" replace /> }
     ]
   }
 ]);
