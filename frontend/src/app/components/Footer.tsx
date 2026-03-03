@@ -24,10 +24,10 @@ export function Footer() {
                     {/* --- COLUNA 1: MARCA --- */}
                     <div className="space-y-6 flex flex-col items-center md:items-start">
                         <div className="flex flex-col md:flex-row items-center gap-4">
-                            <img src={logoBranca} alt="SD Advocacia" className="h-16 w-auto object-contain" />
+                            <img src={logoBranca} alt="DT Advogado" className="h-16 w-auto object-contain" />
                             <div className="hidden md:block w-px h-12 bg-[#c5a059]/50"></div>
                             <div>
-                                <h2 className="font-bold text-lg leading-tight tracking-wide">ADVOCACIA</h2>
+                                <h2 className="font-bold text-lg leading-tight tracking-wide">ADVOGADO</h2>
                                 <p className="text-xs text-[#c5a059] uppercase tracking-wider">Diêgo Thales</p>
                             </div>
                         </div>

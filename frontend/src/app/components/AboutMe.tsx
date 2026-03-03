@@ -7,11 +7,14 @@ export function AboutMe() {
     const { about } = useData();
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const characterLimit = 505;
+    const characterLimit = 500;
     const description = about.description || 'Sua trajetória é pautada pela constante atualização jurídica...';
     const isLongText = description.length > characterLimit;
 
-    const displayText = isExpanded ? description : `${description.substring(0, characterLimit)}...`;
+    // Só adiciona "..." se o texto for longo e NÃO estiver expandido
+    const displayText = (isLongText && !isExpanded)
+        ? `${description.substring(0, characterLimit)}...`
+        : description;
 
     // Função para alternar o texto e scrolar pro topo
     const handleToggle = () => {

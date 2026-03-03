@@ -74,7 +74,7 @@ export function Register() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full px-4 py-2 bg-input-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                                placeholder="exemplo@advocacia.com"
+                                placeholder="exemplo@advogado.com"
                                 required
                             />
                         </div>

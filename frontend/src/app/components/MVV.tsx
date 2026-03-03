@@ -7,7 +7,7 @@ export function MVV() {
     // Texto "Encher Linguiça" Profissional (Marketing Jurídico)
     // Se quiser, depois você move isso pro seu DataContext, mas deixei aqui pra facilitar.
     const richContent = {
-        history: "Fundado sob a premissa de que a advocacia deve ser exercida com rigor técnico e humanidade, nosso escritório consolidou-se, ao longo de 8 anos, como uma referência na defesa de direitos fundamentais e patrimoniais. Nossa trajetória é marcada pela busca incessante por soluções jurídicas inovadoras que não apenas resolvem conflitos, mas que antecipam cenários e protegem o legado de nossos clientes.",
+        history: "Fundado sob a premissa de que o trabalho do advogado deve ser exercido com rigor técnico e humanidade, nosso escritório consolidou-se, ao longo de 8 anos, como uma referência na defesa de direitos fundamentais e patrimoniais. Nossa trajetória é marcada pela busca incessante por soluções jurídicas inovadoras que não apenas resolvem conflitos, mas que antecipam cenários e protegem o legado de nossos clientes.",
         methodology: "Adotamos uma metodologia 'Boutique Full-Service', onde cada caso é tratado como um projeto único. Combinamos a personalização do atendimento artesanal com a eficiência das mais modernas tecnologias jurídicas. Acreditamos que a excelência não é um ato isolado, mas um hábito construído diariamente através do estudo aprofundado, da ética inegociável e da transparência absoluta em cada etapa processual."
     };
 

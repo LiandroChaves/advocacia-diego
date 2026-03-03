@@ -72,7 +72,7 @@ import banner2 from '@/assets/banner2.jpg';
 import banner3 from '@/assets/banner3.jpg';
 
 const fallbackBannersList = [
-  { id: 'f1', imageUrl: banner1, title: 'DT Advocacia', description: 'Defendendo seus direitos com ética', active: true },
+  { id: 'f1', imageUrl: banner1, title: 'DT Advogado', description: 'Defendendo seus direitos com ética', active: true },
   { id: 'f2', imageUrl: banner2, title: 'Consultoria Jurídica', description: 'Comprometimento e transparência', active: true },
   { id: 'f3', imageUrl: banner3, title: 'Excelência Jurídica', description: 'Sua causa é a nossa prioridade', active: true },
 ];
@@ -90,9 +90,9 @@ const fallbackStats: Stat[] = [
 const defaultAbout: AboutOffice = {
   id: '0',
   title: 'Sobre mim',
-  description: 'Com 8 anos de experiência na advocacia, este profissional consolidou uma carreira marcada por comprometimento, ética e resultados expressivos. Atuando em diversas áreas do Direito, desenvolveu habilidades estratégicas para análise de casos complexos, negociação e defesa dos interesses de seus clientes. Sua trajetória é pautada pela constante atualização jurídica, garantindo soluções eficazes e seguras.',
-  mission: 'Atuar com excelência na advocacia, oferecendo serviços jurídicos de alta qualidade, pautados na ética, transparência e compromisso com o cliente. Buscar soluções inovadoras e eficazes, sempre em conformidade com a legislação vigente, visando a satisfação e segurança dos clientes.',
-  vision: 'Ser referência na advocacia, reconhecido pela excelência técnica, atendimento humanizado e resultados expressivos. Expandir a atuação para novas áreas e regiões, consolidando uma reputação de confiança e competência no mercado jurídico.',
+  description: 'Com 8 anos de experiência como advogado, este profissional consolidou uma carreira marcada por comprometimento, ética e resultados expressivos. Atuando em diversas áreas do Direito, desenvolveu habilidades estratégicas para análise de casos complexos, negociação e defesa dos interesses de seus clientes. Sua trajetória é pautada pela constante atualização jurídica, garantindo soluções eficazes e seguras.',
+  mission: 'Atuar com excelência como advogado, oferecendo serviços jurídicos de alta qualidade, pautados na ética, transparência e compromisso com o cliente. Buscar soluções inovadoras e eficazes, sempre em conformidade com a legislação vigente, visando a satisfação e segurança dos clientes.',
+  vision: 'Ser referência como advogado, reconhecido pela excelência técnica, atendimento humanizado e resultados expressivos. Expandir a atuação para novas áreas e regiões, consolidando uma reputação de confiança e competência no mercado jurídico.',
   values: ['Ética inegociável', 'Transparência absoluta', 'Excelência técnica', 'Foco no cliente']
 };
 
@@ -241,7 +241,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     return res;
   };
 
-  const [name, setName] = useState('DT Advocacia e Consultoria Jurídica');
+  const [name, setName] = useState('DT Advogado e Consultoria Jurídica');
 
   // STATES
   const [about, setAbout] = useState<AboutOffice>(defaultAbout);
