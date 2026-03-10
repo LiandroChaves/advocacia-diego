@@ -13,56 +13,56 @@ import heloisaTeam from '@/assets/heloisa.png';
 const fallbackTeam: TeamMember[] = [
   {
     id: 'f-diego',
-    name: 'Diego',
-    role: 'Advogado Sênior',
-    bio: 'Especialista em Direito Civil e Estratégico, com foco em soluções inovadoras para casos complexos.',
+    name: 'Diêgo Moura',
+    role: 'Advogado Sócio Proprietário - OAB/CE 39560',
+    bio: 'Especialista em Direito previdenciário, trabalhista e Bancário com mais de 8 anos de experiência.',
     imageUrl: diegoTeam,
     specialties: ['Direito Civil', 'Estratégia Jurídica']
   },
   {
     id: 'f-jonatas',
-    name: 'Jonatas',
-    role: 'Especialista Jurídico',
-    bio: 'Vasta experiência em negociações e direito empresarial, garantindo segurança jurídica aos parceiros.',
+    name: 'Jonathan Sales',
+    role: 'Advogado OAB/CE 57100',
+    bio: '',
     imageUrl: jonatasTeam,
-    specialties: ['Direito Empresarial', 'Negociação']
+    specialties: []
   },
   {
     id: 'f-heloisa',
-    name: 'Heloisa',
-    role: 'Consultora Jurídica',
-    bio: 'Focada em direito humanizado e resoluções céleres, priorizando sempre o bem-estar do cliente.',
+    name: 'Heloísa De França',
+    role: 'Estagiária',
+    bio: '',
     imageUrl: heloisaTeam,
-    specialties: ['Direito de Família', 'Consultoria']
+    specialties: []
   }
 ];
 
 //testimonials
-import diegoTestimonial from '@/assets/diego.png';
-import jonatasTestimonial from '@/assets/jonatas.png';
-import heloisaTestimonial from '@/assets/heloisa.png';
+import rosto1 from '@/assets/rosto1.jpg';
+import rosto2 from '@/assets/rosto2.jpg';
+import rosto3 from '@/assets/rosto3.jpg';
 
 const fallbackTestimonials: Testimonial[] = [
   {
     id: 't1',
-    name: 'Carlos Oliveira',
-    role: 'Empresário',
-    content: 'O atendimento superou minhas expectativas. Resolveram uma questão contratual complexa com agilidade e transparência total.',
-    avatar: diegoTestimonial
+    name: 'Mariana Albuquerque',
+    role: 'Médica — Defesa em responsabilidade civil',
+    content: 'Recebi acompanhamento técnico minucioso e comunicação sempre objetiva. Cada etapa foi explicada com precisão, o que reduziu muito a ansiedade natural do processo. O trabalho foi conduzido com discrição e extrema organização.',
+    avatar: rosto1
   },
   {
     id: 't2',
-    name: 'Ana Paula Souza',
-    role: 'Cliente Civil',
-    content: 'Excelente profissional. Senti muita segurança desde a primeira consulta. Recomendo fortemente para quem busca ética e resultados.',
-    avatar: heloisaTestimonial
+    name: 'Gustavo Farias',
+    role: 'Engenheiro — Direito imobiliário',
+    content: 'Precisei de análise jurídica para aquisição de imóvel de alto valor. O parecer foi completo, objetivo e apontou riscos que não haviam sido considerados anteriormente. Isso foi decisivo para uma negociação segura.',
+    avatar: rosto2
   },
   {
     id: 't3',
-    name: 'Ricardo Silva',
-    role: 'Diretor Comercial',
-    content: 'Equipe de alto calibre. A visão estratégica aplicada ao meu caso fez toda a diferença no desfecho positivo.',
-    avatar: jonatasTestimonial
+    name: 'Leonardo Barros',
+    role: 'Produtor rural — Regularização de propriedade',
+    content: 'O acompanhamento foi técnico e constante durante toda a regularização. Houve atenção especial à documentação histórica e aos detalhes cartorários. O processo ocorreu sem intercorrências.',
+    avatar: rosto3
   }
 ];
 
@@ -72,18 +72,17 @@ import banner2 from '@/assets/banner2.jpg';
 import banner3 from '@/assets/banner3.jpg';
 
 const fallbackBannersList = [
-  { id: 'f1', imageUrl: banner1, title: 'DT Advogado', description: 'Defendendo seus direitos com ética', active: true },
-  { id: 'f2', imageUrl: banner2, title: 'Consultoria Jurídica', description: 'Comprometimento e transparência', active: true },
-  { id: 'f3', imageUrl: banner3, title: 'Excelência Jurídica', description: 'Sua causa é a nossa prioridade', active: true },
+  { id: 'f1', imageUrl: banner1, title: 'Justiça e Equidade', description: 'Defendendo seus interesses com integridade.', active: true },
+  { id: 'f2', imageUrl: banner2, title: 'Excelência Jurídica', description: 'Experiência para solucionar casos complexos.', active: true },
+  { id: 'f3', imageUrl: banner3, title: 'Compromisso com o Cliente', description: 'Atendimento personalizado e humanizado.', active: true },
 ];
 
 //stats
 import statsBackground from '@/assets/escritorio.png';
 
 const fallbackStats: Stat[] = [
-  { id: 's1', label: 'Processos Ativos', value: '300+' },
-  { id: 's2', label: 'Clientes Satisfeitos', value: '200+' },
-  { id: 's3', label: 'Casos Resolvidos', value: '500+' },
+  { id: 's1', label: 'Clientes', value: '300+' },
+  { id: 's2', label: 'Contratos', value: '200+' },
 ];
 
 // MVV
@@ -100,27 +99,27 @@ const defaultAbout: AboutOffice = {
 const fallbackAreas: PracticeArea[] = [
   {
     id: 'p1',
-    title: 'Direito Civil',
-    description: 'Assessoria completa em contratos, responsabilidade civil e direitos reais.',
+    title: 'Direito Civil e Bancário',
+    description: 'Assessoria completa em questões civis, contratos e responsabilidade civil.',
     icon: 'Scale'
   },
   {
     id: 'p2',
-    title: 'Direito de Família',
-    description: 'Resolução de conflitos familiares com foco na mediação e proteção de direitos.',
-    icon: 'Heart'
+    title: 'Direito Trabalhista',
+    description: 'Defesa dos direitos trabalhistas, ações e consultoria preventiva.',
+    icon: 'Scale'
   },
   {
     id: 'p3',
-    title: 'Direito do Trabalho',
-    description: 'Defesa técnica para garantir o cumprimento da legislação trabalhista.',
-    icon: 'Briefcase'
+    title: 'Direito Previdenciário',
+    description: 'Pensão por morte, salário Maternidade, aposentadoria Rural, Urbana, por tempo de contribuição, Auxílio por incapacidade temporária (Permanente). Etc...',
+    icon: 'Scale'
   },
   {
     id: 'p4',
-    title: 'Direito Empresarial',
-    description: 'Consultoria estratégica para empresas de pequeno a grande porte.',
-    icon: 'Building2'
+    title: 'Direito Criminal',
+    description: 'Defesa criminal em todas as esferas, com ética e profissionalismo.',
+    icon: 'Gavel'
   }
 ];
 
@@ -128,18 +127,18 @@ const fallbackAreas: PracticeArea[] = [
 const fallbackFaqs: FAQ[] = [
   {
     id: 'q1',
-    question: 'Quais documentos preciso para uma consulta inicial?',
-    answer: 'Geralmente, RG, CPF, comprovante de residência e todos os documentos relacionados ao seu caso (contratos, fotos, mensagens ou notificações).'
+    question: 'Como funciona a primeira consulta?',
+    answer: 'A primeira consulta é uma reunião para entender seu caso, esclarecer dúvidas e apresentar as possíveis soluções jurídicas.'
   },
   {
     id: 'q2',
-    question: 'Quanto tempo demora um processo judicial?',
-    answer: 'O tempo varia conforme a complexidade da causa e a agilidade do Judiciário. Durante a consultoria, analisamos as perspectivas específicas do seu caso.'
+    question: 'Quais são as formas de pagamento?',
+    answer: 'Aceitamos diversas formas de pagamento: à vista, parcelado, cartão de crédito e débito.'
   },
   {
     id: 'q3',
-    question: 'Vocês atendem apenas presencialmente?',
-    answer: 'Não! Atendemos clientes em todo o país de forma digital, realizando reuniões por vídeo e peticionamento eletrônico com total segurança.'
+    question: 'Quanto tempo leva um processo?',
+    answer: 'O tempo varia conforme o tipo de processo e a complexidade do caso. Durante a consulta, podemos dar uma estimativa mais precisa.'
   }
 ];
 
@@ -402,9 +401,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
             let fallbackImg = '';
             const lowName = item.name.toLowerCase();
             // Lógica de fallback de imagem baseada no nome (se você tiver fotos padrão)
-            if (lowName.includes('diego')) fallbackImg = diegoTestimonial;
-            else if (lowName.includes('jonatas')) fallbackImg = jonatasTestimonial;
-            else if (lowName.includes('heloisa')) fallbackImg = heloisaTestimonial;
+            if (lowName.includes('mariana')) fallbackImg = rosto1;
+            else if (lowName.includes('gustavo')) fallbackImg = rosto2;
+            else if (lowName.includes('leonardo')) fallbackImg = rosto3;
 
             const imgPath = item.avatar || item.image_url || fallbackImg || item.name.substring(0, 2).toUpperCase();
 

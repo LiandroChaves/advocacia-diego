@@ -4,8 +4,6 @@ import { Target, Eye, Award, CheckCircle2 } from 'lucide-react';
 export function MVV() {
     const { about, name } = useData();
 
-    // Texto "Encher Linguiça" Profissional (Marketing Jurídico)
-    // Se quiser, depois você move isso pro seu DataContext, mas deixei aqui pra facilitar.
     const richContent = {
         history: "Fundado sob a premissa de que o trabalho do advogado deve ser exercido com rigor técnico e humanidade, nosso escritório consolidou-se, ao longo de 8 anos, como uma referência na defesa de direitos fundamentais e patrimoniais. Nossa trajetória é marcada pela busca incessante por soluções jurídicas inovadoras que não apenas resolvem conflitos, mas que antecipam cenários e protegem o legado de nossos clientes.",
         methodology: "Adotamos uma metodologia 'Boutique Full-Service', onde cada caso é tratado como um projeto único. Combinamos a personalização do atendimento artesanal com a eficiência das mais modernas tecnologias jurídicas. Acreditamos que a excelência não é um ato isolado, mas um hábito construído diariamente através do estudo aprofundado, da ética inegociável e da transparência absoluta em cada etapa processual."
@@ -48,8 +46,7 @@ export function MVV() {
                             <h3 className="text-2xl font-bold text-primary">Missão</h3>
                         </div>
                         <p className="text-muted-foreground leading-relaxed pl-4 border-l-2 border-[#c5a059]/30 group-hover:border-[#c5a059] transition-colors">
-                            {/* Texto expandido para Missão */}
-                            {about.mission} Mais do que advogar, buscamos ser agentes de transformação, garantindo que a justiça seja acessível, célere e, acima de tudo, efetiva para a preservação da dignidade e do patrimônio de nossos constituintes.
+                            {about.mission}
                         </p>
                     </div>
 
@@ -64,8 +61,7 @@ export function MVV() {
                             <h3 className="text-2xl font-bold text-primary">Visão</h3>
                         </div>
                         <p className="text-muted-foreground leading-relaxed pl-4 border-l-2 border-[#c5a059]/30 group-hover:border-[#c5a059] transition-colors">
-                            {/* Texto expandido para Visão */}
-                            {about.vision} Almejamos ser reconhecidos não apenas pelo êxito em demandas complexas, mas pela capacidade de inovar no direito, estabelecendo novos padrões de qualidade técnica e atendimento humanizado em todo o território nacional.
+                            {about.vision}
                         </p>
                     </div>
 
@@ -82,7 +78,6 @@ export function MVV() {
                         <ul className="space-y-4">
                             {about.values.map((value, index) => (
                                 <li key={index} className="flex items-start gap-3 text-muted-foreground group/item">
-                                    {/* Ícone de check dourado */}
                                     <CheckCircle2 className="h-5 w-5 text-[#c5a059] flex-shrink-0 mt-0.5 group-hover/item:text-[#0f172a] transition-colors" />
                                     <span className="font-medium group-hover/item:text-[#0f172a] transition-colors">{value}</span>
                                 </li>
